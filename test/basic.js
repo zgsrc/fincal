@@ -18,8 +18,8 @@ describe("Package", function() {
         expect(fincal.paris).to.be.ok;
     });
     
-    it("should have a Berlin locale", function() {
-        expect(fincal.berlin).to.be.ok;
+    it("should have a Frankfurt locale", function() {
+        expect(fincal.frankfurt).to.be.ok;
     });
     
     it("should have a Hong Kong locale", function() {

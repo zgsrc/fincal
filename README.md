@@ -20,6 +20,40 @@ Download over HTTPS:
 ## How do I use it?
 
     var fincal = require("fincal");
+    
+    // New York (NYSE)
+    fincal.new_york.time();
+    fincal.new_york.isEquityMarketHoliday();
+    fincal.new_york.isEquityMarketPartialTradingDay();
+    fincal.new_york.areEquityMarketsOpen();
+    
+    // London (LSE)
+    fincal.london.time();
+    fincal.london.areEquityMarketsOpen();
+    
+    // Paris (Euronext)
+    fincal.paris.time();
+    fincal.paris.areEquityMarketsOpen();
+    
+    // Frankfurt
+    fincal.frankfurt.time();
+    fincal.frankfurt.areEquityMarketsOpen();
+    
+    // Hong Kong
+    fincal.hong_kong.time();
+    fincal.hong_kong.areEquityMarketsOpen();
+    
+    // Shanghai
+    fincal.shanghai.time();
+    fincal.shanghai.areEquityMarketsOpen();
+    
+    // Tokyo
+    fincal.tokyo.time();
+    fincal.tokyo.areEquityMarketsOpen();
+    
+    // Syndey
+    fincal.sydney.time();
+    fincal.sydney.areEquityMarketsOpen();
 
 ## License
 
