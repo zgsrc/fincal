@@ -4,28 +4,35 @@
   "description": "Market holidays and trading hours.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
-    "finance",
-    "calendar",
-    "market",
-    "banking",
-    "holiday",
-    "trading",
-    "hours",
-    "NYSE",
-    "NASDAQ",
-    "CBOE",
-    "CBOT",
-    "LSE",
-    "DAX",
-    "CAC",
-    "ASX"
+    "finance calendar",
+    "market calendar",
+    "market holidays",
+    "banking holidays",
+    "bank holiday",
+    "trading hours",
+    "trading calendar",
+    "stock exchange calendar",
+    "stock exchange hours",
+    "exchange trading hours"
   ],
   "author": "Jonathan Hollinger",
   "license": "ISC",
   "dependencies": {
     "moment-timezone": "^0.4.0"
-  }
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/triploc/fincal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/triploc/fincal/issues"
+  },
+  "homepage": "https://github.com/triploc/fincal#readme"
 }

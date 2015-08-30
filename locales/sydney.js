@@ -7,7 +7,7 @@ function sydneyTime() {
 exports.time = sydneyTime;
     
 function areSydneyEquityMarketsOpen() {
-    var time = newYorkTime(),
+    var time = sydneyTime(),
         day = time.day(),
         hour = time.hour(),
         minute = time.minute();

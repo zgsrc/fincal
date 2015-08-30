@@ -7,7 +7,7 @@ function londonTime() {
 exports.time = londonTime;
 
 function areLondonEquityMarketsOpen() {
-    var time = newYorkTime(),
+    var time = londonTime(),
         day = time.day(),
         hour = time.hour(),
         minute = time.minute();

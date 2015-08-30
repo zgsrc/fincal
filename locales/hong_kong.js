@@ -7,7 +7,7 @@ function hongKongTime() {
 exports.time = hongKongTime;
 
 function areHongKongEquityMarketsOpen() {
-    var time = newYorkTime(),
+    var time = hongKongTime(),
         day = time.day(),
         hour = time.hour(),
         minute = time.minute();

@@ -44,7 +44,9 @@ function isNewYorkEquityMarketHoliday() {
         holidays = newYorkHolidays[time.year()];
     
     if (holidays) holidays = holidays[time.format("MMMM")];
-    return holidays && holidays.indexOf(time.date()) >= 0;
+    
+    if (holidays) return holidays.indexOf(time.date()) >= 0;
+    else return false;
 }
 
 exports.isEquityMarketHoliday = isNewYorkEquityMarketHoliday;
@@ -54,7 +56,9 @@ function isNewYorkEquityMarketPartialTradingDay() {
         holidays = newYorkPartialTradingDays[time.year()];
     
     if (holidays) holidays = holidays[time.format("MMMM")];
-    return holidays && holidays.indexOf(time.date()) >= 0;
+    
+    if (holidays) return holidays.indexOf(time.date()) >= 0;
+    else return false;
 }
 
 exports.isEquityMarketPartialTradingDay = isNewYorkEquityMarketPartialTradingDay;

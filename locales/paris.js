@@ -7,7 +7,7 @@ function parisTime() {
 exports.time = parisTime;
 
 function areParisEquityMarketsOpen() {
-    var time = newYorkTime(),
+    var time = parisTime(),
         day = time.day(),
         hour = time.hour(),
         minute = time.minute();

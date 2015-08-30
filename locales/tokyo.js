@@ -7,7 +7,7 @@ function tokyoTime() {
 exports.time = tokyoTime;
 
 function areTokyoEquityMarketsOpen() {
-    var time = newYorkTime(),
+    var time = tokyoTime(),
         day = time.day(),
         hour = time.hour(),
         minute = time.minute();

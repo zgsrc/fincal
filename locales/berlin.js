@@ -7,7 +7,7 @@ function berlinTime() {
 exports.time = berlinTime;
 
 function areBerlinEquityMarketsOpen() {
-    var time = newYorkTime(),
+    var time = berlinTime(),
         day = time.day(),
         hour = time.hour(),
         minute = time.minute();

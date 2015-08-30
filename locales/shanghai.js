@@ -7,7 +7,7 @@ function shanghaiTime() {
 exports.time = shanghaiTime;
 
 function areShanghaiEquityMarketsOpen() {
-    var time = newYorkTime(),
+    var time = shanghaiTime(),
         day = time.day(),
         hour = time.hour(),
         minute = time.minute();
