@@ -6,12 +6,12 @@ chai.should();
 
 describe("Hong Kong", function() {
     
-    it("should have a working time() method.", function() {
-        fincal.hong_kong.time().should.be.an("object");
+    it("should have a working currentTime() method.", function() {
+        fincal.hong_kong.currentTime().should.be.an("object");
     });
     
-    it("should have a working areEquityMarketsOpen() method.", function() {
-        fincal.hong_kong.areEquityMarketsOpen().should.be.a("boolean");
+    it("should have a working areMarketsOpenNow() method.", function() {
+        fincal.hong_kong.areMarketsOpenNow().should.be.a("boolean");
     });
     
 });

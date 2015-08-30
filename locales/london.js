@@ -1,19 +1,23 @@
-var moment = require('moment-timezone');
+exports.timezone = "Europe/London";
 
-function londonTime() {
-    return moment().tz("Europe/London");
-}
+exports.regularTradingDays = "Weekday";
 
-exports.time = londonTime;
+exports.regularTradingHours = [
+    { from: "9:00 am", to: "4:30 pm" }
+];
 
-function areLondonEquityMarketsOpen() {
-    var time = londonTime(),
-        day = time.day(),
-        hour = time.hour(),
-        minute = time.minute();
+exports.extendedTradingHours = [
     
-    // Monday to Friday, 8:00am to 4:30pm
-    return (day > 0 && day < 6) && ((hour > 8 && hour < 16) || (hour == 16 && minute <= 30));
-}
+];
 
-exports.areEquityMarketsOpen = areLondonEquityMarketsOpen;
+exports.partialTradingDays = {
+    
+};
+
+exports.partialTradingHours = [
+    
+];
+
+exports.holidays = {
+    
+};

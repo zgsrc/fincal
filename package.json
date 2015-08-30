@@ -1,6 +1,6 @@
 {
   "name": "fincal",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Market holidays and trading hours.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,8 @@
   "author": "Jonathan Hollinger",
   "license": "ISC",
   "dependencies": {
-    "moment-timezone": "^0.4.0"
+    "moment-timezone": "^0.4.0",
+    "sugar": "^1.4.1"
   },
   "devDependencies": {
     "chai": "^3.2.0",

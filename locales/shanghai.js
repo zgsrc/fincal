@@ -1,22 +1,24 @@
-var moment = require('moment-timezone');
+exports.timezone = "Asia/Shanghai";
 
-function shanghaiTime() {
-    return moment().tz("Asia/Shanghai");
-}
+exports.regularTradingDays = "Weekday";
 
-exports.time = shanghaiTime;
+exports.regularTradingHours = [
+    { from: "9:15 am", to: "11:30 am" },
+    { from: "1:00 pm", to: "3:00 pm" }
+];
 
-function areShanghaiEquityMarketsOpen() {
-    var time = shanghaiTime(),
-        day = time.day(),
-        hour = time.hour(),
-        minute = time.minute();
+exports.extendedTradingHours = [
     
-    // Monday to Friday, 9:15am to 11:30am and 1:00pm to 3:00pm
-    return (day > 0 && day < 6) && (
-        ((hour == 9 && minute >= 15) || (hour > 9 && hour < 11) || (hour == 11 && minute <= 30)) || 
-        (hour >= 1 && hour < 15)
-    );
-}
+];
 
-exports.areEquityMarketsOpen = areShanghaiEquityMarketsOpen;
+exports.partialTradingDays = {
+    
+};
+
+exports.partialTradingHours = [
+    
+];
+
+exports.holidays = {
+    
+};

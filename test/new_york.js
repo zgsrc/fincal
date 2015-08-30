@@ -6,20 +6,12 @@ chai.should();
 
 describe("New York", function() {
     
-    it("should have a working time() method.", function() {
-        fincal.new_york.time().should.be.an("object");
+    it("should have a working currentTime() method.", function() {
+        fincal.new_york.currentTime().should.be.an("object");
     });
     
-    it("should have a working areEquityMarketsOpen() method.", function() {
-        fincal.new_york.areEquityMarketsOpen().should.be.a("boolean");
-    });
-    
-    it("should have a working isEquityMarketHoliday() method.", function() {
-        fincal.new_york.isEquityMarketHoliday().should.be.a("boolean");
-    });
-    
-    it("should have a working isEquityMarketPartialTradingDay() method.", function() {
-        fincal.new_york.isEquityMarketPartialTradingDay().should.be.a("boolean");
+    it("should have a working areMarketsOpenNow() method.", function() {
+        fincal.new_york.areMarketsOpenNow().should.be.a("boolean");
     });
     
 });

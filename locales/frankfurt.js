@@ -1,19 +1,24 @@
-var moment = require('moment-timezone');
+exports.timezone = "Europe/Berlin";
 
-function frankfurtTime() {
-    return moment().tz("Europe/Berlin");
-}
+exports.regularTradingDays = "Weekday";
 
-exports.time = frankfurtTime;
+exports.regularTradingHours = [
+    { from: "9:00 am", to: "5:30 pm" }
+];
 
-function areEquityMarketsOpen() {
-    var time = frankfurtTime(),
-        day = time.day(),
-        hour = time.hour(),
-        minute = time.minute();
+exports.extendedTradingHours = [
+    { from: "8:00 am", to: "9:00 am" },
+    { from: "5:30 pm", to: "8:00 pm" }
+];
+
+exports.partialTradingDays = {
     
-    // Monday to Friday, 9:00am to 8:00pm
-    return (day > 0 && day < 6) && ((hour >= 9 && hour < 5) || (hour == 5 && minutes <= 30));
-}
+};
 
-exports.areEquityMarketsOpen = areEquityMarketsOpen;
+exports.partialTradingHours = [
+    
+];
+
+exports.holidays = {
+    
+};

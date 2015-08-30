@@ -1,15 +1,17 @@
-exports.new_york = require("./locales/new_york");
+var Locale = require("./locale");
 
-exports.london = require("./locales/london");
+exports.new_york = new Locale("new_york");
 
-exports.paris = require("./locales/paris");
+exports.london = new Locale("london");
 
-exports.frankfurt = require("./locales/frankfurt");
+exports.paris = new Locale("paris");
 
-exports.hong_kong = require("./locales/hong_kong");
+exports.frankfurt = new Locale("frankfurt");
 
-exports.shanghai = require("./locales/shanghai");
+exports.hong_kong = new Locale("hong_kong");
 
-exports.tokyo = require("./locales/tokyo");
+exports.shanghai = new Locale("shanghai");
 
-exports.sydney = require("./locales/sydney");
+exports.tokyo = new Locale("tokyo");
+
+exports.sydney = new Locale("sydney");

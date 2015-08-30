@@ -6,12 +6,12 @@ chai.should();
 
 describe("Shanghai", function() {
     
-    it("should have a working time() method.", function() {
-        fincal.shanghai.time().should.be.an("object");
+    it("should have a working currentTime() method.", function() {
+        fincal.shanghai.currentTime().should.be.an("object");
     });
     
-    it("should have a working areEquityMarketsOpen() method.", function() {
-        fincal.shanghai.areEquityMarketsOpen().should.be.a("boolean");
+    it("should have a working areMarketsOpenNow() method.", function() {
+        fincal.shanghai.areMarketsOpenNow().should.be.a("boolean");
     });
     
 });

@@ -1,19 +1,23 @@
-var moment = require('moment-timezone');
+exports.timezone = "Asia/Hong_Kong";
 
-function hongKongTime() {
-    return moment().tz("Asia/Hong_Kong");
-}
+exports.regularTradingDays = "Weekday";
 
-exports.time = hongKongTime;
+exports.regularTradingHours = [
+    { from: "9:30 am", to: "4:00 pm" }
+];
 
-function areHongKongEquityMarketsOpen() {
-    var time = hongKongTime(),
-        day = time.day(),
-        hour = time.hour(),
-        minute = time.minute();
+exports.extendedTradingHours = [
     
-    // Monday to Friday, 9:30am to 4:00pm
-    return (day > 0 && day < 6) && ((hour == 9 && minute >= 30) || (hour > 9 && hour < 16));
-}
+];
 
-exports.areEquityMarketsOpen = areHongKongEquityMarketsOpen;
+exports.partialTradingDays = {
+    
+};
+
+exports.partialTradingHours = [
+    
+];
+
+exports.holidays = {
+    
+};
