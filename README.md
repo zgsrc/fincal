@@ -22,37 +22,37 @@ Download over HTTPS:
     var fincal = require("fincal");
     
     // New York
-    fincal.new_york.time();
+    fincal.new_york.currentTime();
     fincal.new_york.isEquityMarketHoliday();
     fincal.new_york.isEquityMarketPartialTradingDay();
     fincal.new_york.areMarketsOpenNow();
     
     // London (LSE)
-    fincal.london.time();
+    fincal.london.currentTime();
     fincal.london.areMarketsOpenNow();
     
     // Paris (Euronext)
-    fincal.paris.time();
+    fincal.paris.currentTime();
     fincal.paris.areMarketsOpenNow();
     
     // Frankfurt
-    fincal.frankfurt.time();
+    fincal.frankfurt.currentTime();
     fincal.frankfurt.areMarketsOpenNow();
     
     // Hong Kong
-    fincal.hong_kong.time();
+    fincal.hong_kong.currentTime();
     fincal.hong_kong.areMarketsOpenNow();
     
     // Shanghai
-    fincal.shanghai.time();
+    fincal.shanghai.currentTime();
     fincal.shanghai.areMarketsOpenNow();
     
     // Tokyo
-    fincal.tokyo.time();
+    fincal.tokyo.currentTime();
     fincal.tokyo.areMarketsOpenNow();
     
     // Syndey
-    fincal.sydney.time();
+    fincal.sydney.currentTime();
     fincal.sydney.areMarketsOpenNow();
 
 ## License
