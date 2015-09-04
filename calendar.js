@@ -2,13 +2,13 @@ require("sugar");
 
 var moment = require("moment-timezone");
 
-module.exports = function(locale) {
+module.exports = function(name, locale) {
     
     var me = this;
     
-    this.name = locale;
+    this.name = name;
     
-    locale = require("./locales/" + locale);
+    this.locale = locale;
     
     this.currentTime = function() {
         return moment().tz(locale.timezone);
@@ -16,16 +16,22 @@ module.exports = function(locale) {
     
     function localize(date) {
         if (date) {
-            if (Object.isDate(date)) {
-                date = Date.create(date).format("{yyyy}-{MM}-{dd}");
+            if (Object.isString(date) || Object.isNumber(date)) {
+                date = moment(Date.create(date)).tz(locale.timezone);
             }
-            
-            date = moment(date, "YYYY-MM-DD").tz(locale.timezone);
+            else if (Object.isDate(date) || Object.isObject(date)) {
+                date = moment(date).tz(locale.timezone);
+            }
+            else {
+                throw new Error("Unrecognized date " + date);
+            }
         }
         else date = me.currentTime();
         
         return date;
     }
+    
+    this.localize = localize;
     
     this.isRegularTradingDay = function(date) {
         if (locale.regularTradingDays) {
