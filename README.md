@@ -25,7 +25,7 @@ Download over HTTPS:
     var locales = fincal.locales;
     
     // Instantiate a locale
-    var locale = fincal.calendar("new_york");
+    var locale = fincal.calendar("new_york") = fincal["new_york"] = fincal.new_york;
     
     // Current moment in locale
     locale.currentTime();
@@ -48,19 +48,23 @@ Download over HTTPS:
     // Is within partial trading hours (independent of date).
     locale.isPartialTradingHours([date]);
     
-    
-    
     // Is a trading day?
+    locale.areMarketsOpenOn(new Date());
     locale.areMarketsOpenToday();
     
     // Is a trading day and within applicable trading hours?
+    locale.areMarketsOpenAt(new Date(), [extended=true|false]);
     locale.areMarketsOpenNow([extended=true|false]);
     
-    // 
+    // Trading time in milliseconds
+    locale.totalTradingTimeOn(new Date(), [extended=true|false]);
     locale.totalTradingTimeToday([extended=true|false]);
+    
+    // Elapsed and remaining time today
     locale.timeElapsedInTradingDay([extended=true|false]);
     locale.timeRemainingInTradingDay([extended=true|false]);
     
+    // Some markets trade multiple sessions in a day
     locale.totalTimeInCurrentSession([extended=true|false]);
     locale.timeElapsedInCurrentSession([extended=true|false]);
     locale.timeRemainingInCurrentSession([extended=true|false]);
