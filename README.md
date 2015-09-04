@@ -66,13 +66,13 @@ Download over HTTPS:
     calendar.timeElapsedInCurrentSession([extended]);
     calendar.timeRemainingInCurrentSession([extended]);
     
-### Parameters
+#### Parameters
 
-#### extended
-a boolean flag indicating if the call applies to regular trading hours (false) or extended trading hours (true)
+> ##### extended
+>> a boolean flag indicating if the call applies to regular trading hours (false) or extended trading hours (true)
     
-#### date
-a javascript date, a date string, a unix offset, or a valid moment object
+> ##### date
+>> a javascript date, a date string, a unix offset, or a valid moment object
 
 ### Advanced
 
