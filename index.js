@@ -1,17 +1,15 @@
-var Locale = require("./locale");
+var fs = require("fs"),
+    Locale = require("./locale"),
+    cache = { };
 
-exports.new_york = new Locale("new_york");
+exports.calendar = function(name) {
+    if (cache[name]) return cache[name];
+    else cache[name] = new Locale(name);
+    return cache[name];
+};
 
-exports.london = new Locale("london");
-
-exports.paris = new Locale("paris");
-
-exports.frankfurt = new Locale("frankfurt");
-
-exports.hong_kong = new Locale("hong_kong");
-
-exports.shanghai = new Locale("shanghai");
-
-exports.tokyo = new Locale("tokyo");
-
-exports.sydney = new Locale("sydney");
+exports.locales = fs.readdirSync("./locales").filter(/.*js/).map(function(file) {
+    var name = file.replace(".js", "");;
+    exports[name] = exports.calendar(name);
+    return name;
+});

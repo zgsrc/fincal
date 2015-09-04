@@ -21,39 +21,49 @@ Download over HTTPS:
 
     var fincal = require("fincal");
     
-    // New York
-    fincal.new_york.currentTime();
-    fincal.new_york.isEquityMarketHoliday();
-    fincal.new_york.isEquityMarketPartialTradingDay();
-    fincal.new_york.areMarketsOpenNow();
+    // Array of valid locales
+    var locales = fincal.locales;
     
-    // London (LSE)
-    fincal.london.currentTime();
-    fincal.london.areMarketsOpenNow();
+    // Instantiate a locale
+    var locale = fincal.calendar("new_york");
     
-    // Paris (Euronext)
-    fincal.paris.currentTime();
-    fincal.paris.areMarketsOpenNow();
+    // Current moment in locale
+    locale.currentTime();
     
-    // Frankfurt
-    fincal.frankfurt.currentTime();
-    fincal.frankfurt.areMarketsOpenNow();
+    // Is a regular trading day? (Usually Monday to Friday.)
+    locale.isRegularTradingDay([date]);
     
-    // Hong Kong
-    fincal.hong_kong.currentTime();
-    fincal.hong_kong.areMarketsOpenNow();
+    // Is a partial trading day? (Often the day before or after a full holiday.)
+    locale.isPartialTradingDay([date]);
     
-    // Shanghai
-    fincal.shanghai.currentTime();
-    fincal.shanghai.areMarketsOpenNow();
+    // Is a holiday? (No trading.)
+    locale.isHoliday([date]);
     
-    // Tokyo
-    fincal.tokyo.currentTime();
-    fincal.tokyo.areMarketsOpenNow();
+    // Is within regular trading hours (independent of date).
+    locale.isRegularTradingHours([date]);
     
-    // Syndey
-    fincal.sydney.currentTime();
-    fincal.sydney.areMarketsOpenNow();
+    // Is within extended trading hours (independent of date).
+    locale.isExtendedTradingHours([date]);
+    
+    // Is within partial trading hours (independent of date).
+    locale.isPartialTradingHours([date]);
+    
+    
+    
+    // Is a trading day?
+    locale.areMarketsOpenToday();
+    
+    // Is a trading day and within applicable trading hours?
+    locale.areMarketsOpenNow([extended=true|false]);
+    
+    // 
+    locale.totalTradingTimeToday([extended=true|false]);
+    locale.timeElapsedInTradingDay([extended=true|false]);
+    locale.timeRemainingInTradingDay([extended=true|false]);
+    
+    locale.totalTimeInCurrentSession([extended=true|false]);
+    locale.timeElapsedInCurrentSession([extended=true|false]);
+    locale.timeRemainingInCurrentSession([extended=true|false]);
 
 ## License
 

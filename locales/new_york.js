@@ -45,5 +45,45 @@ exports.holidays = {
         September: [ 5 ],
         November: [ 24 ],
         December: [ 26 ]
+    },
+    2017: {
+        January: [ 2, 16 ],
+        February: [ 20 ],
+        April: [ 14 ],
+        May: [ 29 ],
+        July: [ 4 ],
+        September: [ 4 ],
+        November: [ 23 ],
+        December: [ 25 ]
+    },
+    2018: {
+        January: [ 1, 15 ],
+        February: [ 19 ],
+        March: [ 30 ],
+        May: [ 28 ],
+        July: [ 4 ],
+        September: [ 3 ],
+        November: [ 22 ],
+        December: [ 25 ]
+    },
+    2019: {
+        January: [ 1, 21 ],
+        February: [ 18 ],
+        April: [ 19 ],
+        May: [ 27 ],
+        July: [ 4 ],
+        September: [ 2 ],
+        November: [ 28 ],
+        December: [ 25 ]
+    },
+    2020: {
+        January: [ 1, 20 ],
+        February: [ 17 ],
+        April: [ 10 ],
+        May: [ 25 ],
+        July: [ 3 ],
+        September: [ 7 ],
+        November: [ 26 ],
+        December: [ 25 ]
     }
 };

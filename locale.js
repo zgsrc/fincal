@@ -14,7 +14,20 @@ module.exports = function(locale) {
         return moment().tz(locale.timezone);
     };
     
-    this.isRegularTradingDay = function() {
+    function localize(date) {
+        if (date) {
+            if (Object.isDate(date)) {
+                date = Date.create(date).format("yyyy-MM-dd");
+            }
+            
+            date = moment(date, "YYYY-MM-DD").tz(locale.timezone);
+        }
+        else date = me.currentTime();
+        
+        return date;
+    }
+    
+    this.isRegularTradingDay = function(date) {
         if (locale.regularTradingDays) {
             if (Object.isString(locale.regularTradingDays)) {
                 return Date.create()["is" + locale.regularTradingDays]();
@@ -22,7 +35,7 @@ module.exports = function(locale) {
             else if (locale.regularTradingDays.from && locale.regularTradingDays.to) {
                 var from = Date.create(locale.regularTradingDays.from).getDay(),
                     to = Date.create(locale.regularTradingDays.to).getDay(),
-                    day = moment().day();
+                    day = localize(date).day();
                 
                 return day >= from && day <= to;
             }
@@ -31,9 +44,9 @@ module.exports = function(locale) {
         else return false;
     };
     
-    this.isPartialTradingDay = function() {
+    this.isPartialTradingDay = function(date) {
         if (locale.partialTradingDays) {
-            var time = me.currentTime(),
+            var time = localize(date),
                 holidays = locale.partialTradingDays[time.year()];
 
             if (holidays) holidays = holidays[time.format("MMMM")];
@@ -44,9 +57,9 @@ module.exports = function(locale) {
         else return false;
     };
     
-    this.isHoliday = function() {
+    this.isHoliday = function(date) {
         if (locale.holidays) {
-            var time = me.currentTime(),
+            var time = localize(date),
                 holidays = locale.holidays[time.year()];
 
             if (holidays) holidays = holidays[time.format("MMMM")];
@@ -57,9 +70,9 @@ module.exports = function(locale) {
         else return false;
     };
     
-    this.isRegularTradingHours = function() {
+    this.isRegularTradingHours = function(date) {
         if (locale.regularTradingHours) {
-            var time = me.currentTime(),
+            var time = localize(date),
                 hours = locale.regularTradingHours;
             
             return hours.any(function(session) {
@@ -77,9 +90,9 @@ module.exports = function(locale) {
         else return false;
     };
     
-    this.isExtendedTradingHours = function() {
+    this.isExtendedTradingHours = function(date) {
         if (locale.extendedTradingHours) {
-            var time = me.currentTime(),
+            var time = localize(date),
                 hours = locale.extendedTradingHours;
             
             return hours.any(function(session) {
@@ -97,9 +110,9 @@ module.exports = function(locale) {
         else return false;
     };
     
-    this.isPartialTradingHours = function() {
+    this.isPartialTradingHours = function(date) {
         if (locale.partialTradingHours) {
-            var time = me.currentTime(),
+            var time = localize(date),
                 hours = locale.partialTradingHours;
             
             return hours.any(function(session) {
@@ -115,6 +128,50 @@ module.exports = function(locale) {
             });
         }
         else return false;
+    };
+    
+    this.areMarketsOpenOn = function(date) {
+        if (me.isHoliday(date)) return false;
+        else if (me.isPartialTradingDay(date)) return true;
+        else return me.isRegularTradingDay(date);
+    };
+    
+    this.areMarketsOpenAt = function(datetime, extended) {
+        if (me.isHoliday(datetime)) {
+            return false;
+        }
+        else if (me.isPartialTradingDay(datetime)) {
+            return me.isPartialTradingHours(datetime);
+        }
+        else if (me.isRegularTradingDay(datetime)) {
+            if (extended) return me.isExtendedTradingHours(datetime);
+            else return me.isRegularTradingHours(datetime);
+        }
+        else return false;
+    };
+    
+    this.totalTradingTimeOn = function(date, extended) {
+        if (me.isHoliday(date)) {
+            return 0;
+        }
+        else if (me.isPartialTradingDay(date)) {
+            return locale.partialTradingHours.sum(function(session) {
+                return Date.range(session.from, session.to).span();
+            });
+        }
+        else if (me.isRegularTradingDay(date)) {
+            if (extended) {
+                return locale.extendedTradingHours.sum(function(session) {
+                    return Date.range(session.from, session.to).span();
+                });
+            }
+            else {
+                return locale.regularTradingHours.sum(function(session) {
+                    return Date.range(session.from, session.to).span();
+                });
+            }
+        }
+        else return 0;
     };
     
     this.areMarketsOpenToday = function() {
@@ -170,23 +227,23 @@ module.exports = function(locale) {
         }
         else if (me.isPartialTradingDay()) {
             return locale.partialTradingHours.sum(function(session) {
-                if (session.from.isAfter(local)) return 0;
-                else if (session.to.isBefore(local)) return Date.range(session.from, session.to).span();
+                if (Date.create(session.from).isAfter(local)) return 0;
+                else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
                 else return Date.range(session.from, local).span();
             });
         }
         else if (me.isRegularTradingDay()) {
             if (extended) {
                 return locale.extendedTradingHours.sum(function(session) {
-                    if (session.from.isAfter(local)) return 0;
-                    else if (session.to.isBefore(local)) return Date.range(session.from, session.to).span();
+                    if (Date.create(session.from).isAfter(local)) return 0;
+                    else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
                     else return Date.range(session.from, local).span();
                 });
             }
             else {
                 return locale.regularTradingHours.sum(function(session) {
-                    if (session.from.isAfter(local)) return 0;
-                    else if (session.to.isBefore(local)) return Date.range(session.from, session.to).span();
+                    if (Date.create(session.from).isAfter(local)) return 0;
+                    else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
                     else return Date.range(session.from, local).span();
                 });
             }
@@ -207,8 +264,8 @@ module.exports = function(locale) {
         }
         else if (me.isPartialTradingDay()) {
             var session = locale.partialTradingHours.find(function(session) {
-                if (session.from.isAfter(local)) return false;
-                else if (session.to.isBefore(local)) return false;
+                if (Date.create(session.from).isAfter(local)) return false;
+                else if (Date.create(session.to).isBefore(local)) return false;
                 else return true;
             });
             
@@ -218,8 +275,8 @@ module.exports = function(locale) {
         else if (me.isRegularTradingDay()) {
             if (extended) {
                 var session = locale.extendedTradingHours.find(function(session) {
-                    if (session.from.isAfter(local)) return false;
-                    else if (session.to.isBefore(local)) return false;
+                    if (Date.create(session.from).isAfter(local)) return false;
+                    else if (Date.create(session.to).isBefore(local)) return false;
                     else return true;
                 });
 
@@ -228,8 +285,8 @@ module.exports = function(locale) {
             }
             else {
                 var session = locale.regularTradingHours.find(function(session) {
-                    if (session.from.isAfter(local)) return false;
-                    else if (session.to.isBefore(local)) return false;
+                    if (Date.create(session.from).isAfter(local)) return false;
+                    else if (Date.create(session.to).isBefore(local)) return false;
                     else return true;
                 });
 
@@ -249,8 +306,8 @@ module.exports = function(locale) {
         }
         else if (me.isPartialTradingDay()) {
             var session = locale.partialTradingHours.find(function(session) {
-                if (session.from.isAfter(local)) return false;
-                else if (session.to.isBefore(local)) return false;
+                if (Date.create(session.from).isAfter(local)) return false;
+                else if (Date.create(session.to).isBefore(local)) return false;
                 else return true;
             });
             
@@ -260,8 +317,8 @@ module.exports = function(locale) {
         else if (me.isRegularTradingDay()) {
             if (extended) {
                 var session = locale.extendedTradingHours.find(function(session) {
-                    if (session.from.isAfter(local)) return false;
-                    else if (session.to.isBefore(local)) return false;
+                    if (Date.create(session.from).isAfter(local)) return false;
+                    else if (Date.create(session.to).isBefore(local)) return false;
                     else return true;
                 });
 
@@ -270,8 +327,8 @@ module.exports = function(locale) {
             }
             else {
                 var session = locale.regularTradingHours.find(function(session) {
-                    if (session.from.isAfter(local)) return false;
-                    else if (session.to.isBefore(local)) return false;
+                    if (Date.create(session.from).isAfter(local)) return false;
+                    else if (Date.create(session.to).isBefore(local)) return false;
                     else return true;
                 });
 
@@ -285,4 +342,5 @@ module.exports = function(locale) {
     this.timeRemainingInCurrentSession = function(extended) {
         return me.totalTimeInCurrentSession() - me.timeElapsedInCurrentSession();
     };
+    
 };
