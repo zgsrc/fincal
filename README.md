@@ -21,53 +21,69 @@ Download over HTTPS:
 
     var fincal = require("fincal");
     
+    // Import a calendar for a locale
+    fincal.import("Someplace", { ... });
+    
     // Array of valid locales
     var locales = fincal.locales;
     
-    // Instantiate a locale
-    var locale = fincal.calendar("new_york") = fincal["new_york"] = fincal.new_york;
+    // Get a market calendar for a locale
+    var calendar = fincal.calendar("new_york") = fincal["new_york"] = fincal.new_york;
+    
+    // Calendar data
+    console.log(calendar.name); // > "New York"
+    console.log(calendar.locale); // > [Object]
+    
+    // Localize a date
+    calendar.localize([date]);
     
     // Current moment in locale
-    locale.currentTime();
+    calendar.currentTime();
     
     // Is a regular trading day? (Usually Monday to Friday.)
-    locale.isRegularTradingDay([date]);
+    calendar.isRegularTradingDay([date]);
     
     // Is a partial trading day? (Often the day before or after a full holiday.)
-    locale.isPartialTradingDay([date]);
+    calendar.isPartialTradingDay([date]);
     
     // Is a holiday? (No trading.)
-    locale.isHoliday([date]);
+    calendar.isHoliday([date]);
     
     // Is within regular trading hours (independent of date).
-    locale.isRegularTradingHours([date]);
+    calendar.isRegularTradingHours([date]);
     
     // Is within extended trading hours (independent of date).
-    locale.isExtendedTradingHours([date]);
+    calendar.isExtendedTradingHours([date]);
     
     // Is within partial trading hours (independent of date).
-    locale.isPartialTradingHours([date]);
+    calendar.isPartialTradingHours([date]);
     
     // Is a trading day?
-    locale.areMarketsOpenOn(new Date());
-    locale.areMarketsOpenToday();
+    calendar.areMarketsOpenOn(date);
+    calendar.areMarketsOpenToday();
     
     // Is a trading day and within applicable trading hours?
-    locale.areMarketsOpenAt(new Date(), [extended=true|false]);
-    locale.areMarketsOpenNow([extended=true|false]);
+    calendar.areMarketsOpenAt(date, [extended]);
+    calendar.areMarketsOpenNow([extended]);
     
     // Trading time in milliseconds
-    locale.totalTradingTimeOn(new Date(), [extended=true|false]);
-    locale.totalTradingTimeToday([extended=true|false]);
+    calendar.totalTradingTimeOn(date, [extended]);
+    calendar.totalTradingTimeToday([extended]);
     
     // Elapsed and remaining time today
-    locale.timeElapsedInTradingDay([extended=true|false]);
-    locale.timeRemainingInTradingDay([extended=true|false]);
+    calendar.timeElapsedInTradingDay([extended]);
+    calendar.timeRemainingInTradingDay([extended]);
     
     // Some markets trade multiple sessions in a day
-    locale.totalTimeInCurrentSession([extended=true|false]);
-    locale.timeElapsedInCurrentSession([extended=true|false]);
-    locale.timeRemainingInCurrentSession([extended=true|false]);
+    calendar.totalTimeInCurrentSession([extended]);
+    calendar.timeElapsedInCurrentSession([extended]);
+    calendar.timeRemainingInCurrentSession([extended]);
+    
+Parameters
+
+    extended – a boolean flag indicating if the call applies to regular trading hours (false) or extended trading hours (true)
+    
+    date - a javascript date, a date string, a unix offset, or a valid moment object
 
 ## License
 

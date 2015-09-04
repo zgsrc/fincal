@@ -6,7 +6,7 @@ module.exports = function(name, locale) {
     
     var me = this;
     
-    this.name = name;
+    this.name = name.titleize();
     
     this.locale = locale;
     

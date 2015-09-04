@@ -23,6 +23,19 @@ files.forEach(function(file) {
     var title = file.replace(".js", "").titleize();
     describe(title, function() {
         var name = file.replace(/\.js/gi, "");
+        
+        it("should have a name '" + name.titleize() + "'.", function() {
+            calendar(name).name.should.equal(name.titleize());
+        });
+        
+        it("should have a locale object.", function() {
+            calendar(name).locale.should.be.an("object");
+        });
+        
+        it("should have a working localize() method.", function() {
+            calendar(name).localize(Date.create()).should.be.an("object");
+        });
+        
         it("should have a working currentTime() method.", function() {
             calendar(name).currentTime().should.be.an("object");
         });
