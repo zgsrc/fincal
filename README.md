@@ -21,21 +21,8 @@ Download over HTTPS:
 
     var fincal = require("fincal");
     
-    // Import a calendar for a locale
-    fincal.import("Someplace", { ... });
-    
-    // Array of valid locales
-    var locales = fincal.locales;
-    
     // Get a market calendar for a locale
     var calendar = fincal.calendar("new_york") = fincal["new_york"] = fincal.new_york;
-    
-    // Calendar data
-    console.log(calendar.name); // > "New York"
-    console.log(calendar.locale); // > [Object]
-    
-    // Localize a date
-    calendar.localize([date]);
     
     // Current moment in locale
     calendar.currentTime();
@@ -49,16 +36,16 @@ Download over HTTPS:
     // Is a holiday? (No trading.)
     calendar.isHoliday([date]);
     
-    // Is within regular trading hours (independent of date).
+    // Is within regular trading hours? (Date is ignored.)
     calendar.isRegularTradingHours([date]);
     
-    // Is within extended trading hours (independent of date).
+    // Is within extended trading hours?  (Date is ignored.)
     calendar.isExtendedTradingHours([date]);
     
-    // Is within partial trading hours (independent of date).
+    // Is within partial trading hours?  (Date is ignored.)
     calendar.isPartialTradingHours([date]);
     
-    // Is a trading day?
+    // Is a trading day? (Time is ignored.)
     calendar.areMarketsOpenOn(date);
     calendar.areMarketsOpenToday();
     
@@ -66,24 +53,40 @@ Download over HTTPS:
     calendar.areMarketsOpenAt(date, [extended]);
     calendar.areMarketsOpenNow([extended]);
     
-    // Trading time in milliseconds
+    // Total trading time in milliseconds.
     calendar.totalTradingTimeOn(date, [extended]);
     calendar.totalTradingTimeToday([extended]);
     
-    // Elapsed and remaining time today
+    // Elapsed and remaining trading time today.
     calendar.timeElapsedInTradingDay([extended]);
     calendar.timeRemainingInTradingDay([extended]);
     
-    // Some markets trade multiple sessions in a day
+    // Some markets trade multiple sessions in a day.
     calendar.totalTimeInCurrentSession([extended]);
     calendar.timeElapsedInCurrentSession([extended]);
     calendar.timeRemainingInCurrentSession([extended]);
     
-Parameters
+### Parameters
 
-    extended – a boolean flag indicating if the call applies to regular trading hours (false) or extended trading hours (true)
+#### extended
+a boolean flag indicating if the call applies to regular trading hours (false) or extended trading hours (true)
     
-    date - a javascript date, a date string, a unix offset, or a valid moment object
+#### date
+a javascript date, a date string, a unix offset, or a valid moment object
+
+### Advanced
+
+    // Array of valid locales
+    var locales = fincal.locales;
+
+    fincal.import("Someplace", { ... });
+    
+    // Calendar data
+    console.log(calendar.name); // > "New York"
+    console.log(calendar.locale); // > [Object]
+    
+    // Localize a date
+    calendar.localize([date]);
 
 ## License
 
