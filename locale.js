@@ -17,7 +17,7 @@ module.exports = function(locale) {
     function localize(date) {
         if (date) {
             if (Object.isDate(date)) {
-                date = Date.create(date).format("yyyy-MM-dd");
+                date = Date.create(date).format("{yyyy}-{MM}-{dd}");
             }
             
             date = moment(date, "YYYY-MM-DD").tz(locale.timezone);
@@ -30,7 +30,8 @@ module.exports = function(locale) {
     this.isRegularTradingDay = function(date) {
         if (locale.regularTradingDays) {
             if (Object.isString(locale.regularTradingDays)) {
-                return Date.create()["is" + locale.regularTradingDays]();
+                date = localize(date);
+                return Date.create(date.format("YYYY-MM-DD"))["is" + locale.regularTradingDays]();
             }
             else if (locale.regularTradingDays.from && locale.regularTradingDays.to) {
                 var from = Date.create(locale.regularTradingDays.from).getDay(),

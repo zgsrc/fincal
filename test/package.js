@@ -29,6 +29,8 @@ files.forEach(function(file) {
         
         it("should have a working isRegularTradingDay() method.", function() {
             calendar(name).isRegularTradingDay().should.be.a("boolean");
+            calendar(name).isRegularTradingDay(Date.create("Jan 1 2017")).should.be.false;
+            calendar(name).isRegularTradingDay(Date.create("Jan 16 2015")).should.be.true;
         });
         
         it("should have a working isPartialTradingDay() method.", function() {
@@ -37,6 +39,7 @@ files.forEach(function(file) {
         
         it("should have a working isHoliday() method.", function() {
             calendar(name).isHoliday().should.be.a("boolean");
+            calendar(name).isRegularTradingDay(Date.create("Jan 1 2016")).should.be.true;
         });
         
         it("should have a working isRegularTradingHours() method.", function() {
