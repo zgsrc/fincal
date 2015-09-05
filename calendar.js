@@ -65,6 +65,10 @@ module.exports = function(name, locale) {
         else return false;
     };
     
+    this.isTradingDay = function(date) {
+        return me.isRegularTradingDay(date) || me.isPartialTradingDay(date);
+    };
+    
     this.isHoliday = function(date) {
         if (locale.holidays) {
             var time = localize(date),
@@ -349,6 +353,142 @@ module.exports = function(name, locale) {
     
     this.timeRemainingInCurrentSession = function(extended) {
         return me.totalTimeInCurrentSession() - me.timeElapsedInCurrentSession();
+    };
+    
+    this.nextTradingDay = function(date) {
+        date = localize(date);
+        for (var i = 0; i < 400; i++) {
+            if (me.isTradingDay(date)) return true;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next trading day.");
+    };
+    
+    this.nextTradingSession = function(date) {
+        date = localize(date);
+        
+        var local = Date.create(date.format("hh:mm"));
+        
+        for (var i = 0; i < 400; i++) {
+            if (me.isTradingDay(date)){
+                if (me.isPartialTradingDay()) {
+                    var session = locale.partialTradingHours.find(function(session) {
+                        if (Date.create(session.from).isAfter(local)) return false;
+                        else if (Date.create(session.to).isBefore(local)) return false;
+                        else return true;
+                    });
+
+                    return { date: date, session: session };
+                }
+                else { // if (me.isRegularTradingDay()) {
+                    if (extended) {
+                        var session = locale.extendedTradingHours.find(function(session) {
+                            if (Date.create(session.from).isAfter(local)) return false;
+                            else if (Date.create(session.to).isBefore(local)) return false;
+                            else return true;
+                        });
+
+                        return { date: date, session: session };
+                    }
+                    else {
+                        var session = locale.regularTradingHours.find(function(session) {
+                            if (Date.create(session.from).isAfter(local)) return false;
+                            else if (Date.create(session.to).isBefore(local)) return false;
+                            else return true;
+                        });
+
+                        return { date: date, session: session };
+                    }
+                }
+            }
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next trading session.");
+    };
+    
+    this.nextRegularTradingDay = function(date) {
+        date = localize(date);
+        for (var i = 0; i < 400; i++) {
+            if (me.isRegularTradingDay(date)) return true;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next regular trading day.");
+    };
+    
+    this.nextTradingSession = function(date) {
+        date = localize(date);
+        
+        var local = Date.create(date.format("hh:mm"));
+        
+        for (var i = 0; i < 400; i++) {
+            if (me.isRegularTradingDay(date)){
+                if (extended) {
+                    var session = locale.extendedTradingHours.find(function(session) {
+                        if (Date.create(session.from).isAfter(local)) return false;
+                        else if (Date.create(session.to).isBefore(local)) return false;
+                        else return true;
+                    });
+
+                    return { date: date, session: session };
+                }
+                else {
+                    var session = locale.regularTradingHours.find(function(session) {
+                        if (Date.create(session.from).isAfter(local)) return false;
+                        else if (Date.create(session.to).isBefore(local)) return false;
+                        else return true;
+                    });
+
+                    return { date: date, session: session };
+                }
+            }
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next trading session.");
+    };
+    
+    this.nextPartialTradingDay = function(date) {
+        date = localize(date);
+        for (var i = 0; i < 400; i++) {
+            if (me.isPartialTradingDay(date)) return true;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next partial trading day.");
+    };
+    
+    this.nextPartialTradingSession = function(date) {
+        date = localize(date);
+        
+        var local = Date.create(date.format("hh:mm"));
+        
+        for (var i = 0; i < 400; i++) {
+            if (me.isPartialTradingDay(date)){
+                var session = locale.partialTradingHours.find(function(session) {
+                    if (Date.create(session.from).isAfter(local)) return false;
+                    else if (Date.create(session.to).isBefore(local)) return false;
+                    else return true;
+                });
+
+                return { date: date, session: session };
+            }
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next trading session.");
+    };
+    
+    this.nextHoliday = function(date) {
+        date = localize(date);
+        for (var i = 0; i < 100; i++) {
+            if (me.isHoliday(date)) return true;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next holiday.");
     };
     
 };

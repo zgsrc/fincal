@@ -33,6 +33,9 @@ Download over HTTPS:
     // Is a partial trading day? (Often the day before or after a full holiday.)
     calendar.isPartialTradingDay([date]);
     
+    // Is partial or regular trading day
+    calendar.isTradingDay([date]);
+    
     // Is a holiday? (No trading.)
     calendar.isHoliday([date]);
     
@@ -65,6 +68,15 @@ Download over HTTPS:
     calendar.totalTimeInCurrentSession([extended]);
     calendar.timeElapsedInCurrentSession([extended]);
     calendar.timeRemainingInCurrentSession([extended]);
+    
+    // Find next
+    calendar.nextTradingDay([date]);
+    calendar.nextTradingSession([date]);
+    calendar.nextRegularTradingDay([date]);
+    calendar.nextRegularTradingSession([date]);
+    calendar.nextPartialTradingDay([date]);
+    calendar.nextPartialTradingSession([date]);
+    calendar.nextHoliday([date]);
     
 #### Parameters
 
