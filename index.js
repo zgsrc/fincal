@@ -2,6 +2,8 @@ var fs = require("fs"),
     Calendar = require("./calendar"),
     cache = { };
 
+exports.Calendar = Calendar;
+
 exports.calendar = function(name) {
     if (cache[name]) return cache[name];
     else cache[name] = new Calendar(name, require("./locales/" + name));

@@ -16,19 +16,20 @@ module.exports = function(name, locale) {
     
     function localize(date) {
         if (date) {
+            if (moment.isMoment(date)) {
+                return date;
+            }
             if (Object.isString(date) || Object.isNumber(date)) {
-                date = moment(Date.create(date)).tz(locale.timezone);
+                return moment(Date.create(date)).tz(locale.timezone);
             }
             else if (Object.isDate(date) || Object.isObject(date)) {
-                date = moment(date).tz(locale.timezone);
+                return moment(date).tz(locale.timezone);
             }
             else {
                 throw new Error("Unrecognized date " + date);
             }
         }
-        else date = me.currentTime();
-        
-        return date;
+        else return me.currentTime();
     }
     
     this.localize = localize;
