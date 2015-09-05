@@ -70,7 +70,7 @@ Download over HTTPS:
 
 > ##### extended
 > A boolean flag indicating whether the call applies to regular trading hours (false or omitted) or extended trading hours (true).
-    
+          
 > ##### date
 > * Javascript date (i.e. new Date()), 
 > * [Sugary date string](http://sugarjs.com/dates), 
@@ -141,6 +141,11 @@ with a compatible Locale object.
             }
         }
     };
+    
+    var oneOff = new fincal.Calendar("new_york", locale);
+    
+    fincal.import("new_york", locale);
+    var loaded = fincal.new_york;
 
 ## License
 
