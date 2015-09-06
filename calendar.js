@@ -8,7 +8,7 @@ exports.here = function(date) {
             return moment(date.toDate());
         }
         else if (Object.isString(date)) {
-            return moment(Date.create(date));
+            return moment(Date.create(date).format('{yyyy}-{MM}-{dd}T{HH}:{mm}:{ss}'));
         }
         else if (Object.isNumber(date)) {
             return moment(date);
