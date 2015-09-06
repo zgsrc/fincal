@@ -2,7 +2,7 @@
 
 ### Market calendar and trading hours.
 
-Support for equity markets in:
+Support for equity markets from 2015 until 2020 in:
 * New York
 * London
 * Paris
@@ -11,11 +11,6 @@ Support for equity markets in:
 * Shanghai
 * Tokyo
 * Sydney
-
-Support for bond markets in:
-* United States
-* United Kingdom
-* Japan
 
 
 ## How do I get it?
