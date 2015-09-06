@@ -37,14 +37,14 @@ Download over HTTPS:
 
 > Value can be:
 
-> * Javascript date (i.e. new Date())
+> * Javascript date (i.e. new Date() or equivalent)
 > * Unix time (milliseconds since the epoch)
 
-> Javascript dates and unix timestamps have implicit timezones and will be converted to the calendar timezone.
+> Javascript dates and unix timestamps have implicit timezones and will be converted to the calendar timezone,
 changing the display time (e.g. January 1st 11pm in New York is January 2nd in London).
 
-> * [Sugar-y date string](http://sugarjs.com/dates)
-> * Valid [date structure](http://momentjs.com/docs/#/parsing/object/)
+> * [Sugar-y date string](http://sugarjs.com/dates) (e.g. "Monday", "Last Friday in July", "Sep 1 2015 4:00pm")
+> * Valid [date structure](http://momentjs.com/docs/#/parsing/object/) (e.g. { year: 2015, month: 1: day: 1 })
 
 > Strings and date structures are interpreted as local to the calendar timezone (e.g. "Tuesday" means midnight on Tuesday there).
 
@@ -53,16 +53,21 @@ changing the display time (e.g. January 1st 11pm in New York is January 2nd in L
 
 > Moments and moments with timezones have explicit timezones and are converted to the calendar timezone.
 
-> **TIP:** Use strings and objects to talk about relative and absolute times "over there".  Use date objects and unix offsets 
-to convert dates and times "here".  For advanced control, use moments.
+> **TIP:** Use strings and objects to talk about relative and absolute times "over there".  Use javascript dates and unix offsets 
+to convert dates and times "here".  For advanced control, use moments (described below).
 
 
 ##### extended
 > A boolean flag indicating whether the call applies to regular trading hours (false or omitted) or extended trading hours (true).
 
 
-#### Timezones
-    
+#### Moments and Timezones
+Locally, dates and times are separate things.  Across timezones, they are inextricably linked
+and the logic gets complicated.  Fincal uses [sugar](http://sugarjs.com/dates) 
+and [moment](http://momentjs.com/) to simplify and enhance date parsing and comprehension.
+
+Examples of moment creation:
+
     // Current time in locale
     calendar.currentTime();
     
@@ -72,15 +77,32 @@ to convert dates and times "here".  For advanced control, use moments.
     
     // Create a moment there
     calendar.there([date]);
+    calendar.there() == calendar.currentTime();
     
     // Maybe the code is running somewhere else than "here".
     fincal.setTimezoneHere("America/Chicago");
+    
+    // Examples
+    calendar.here("Sep 1 2015 4:00 pm");
+    calendar.there("Monday 9:30am");
+    calendar.there({ year: 2015, month: 1, day: 1 });
+    calendar.there(calendar.here("Sep 1 2015 4:00 pm"));
+    
+    // Relative Formats
+    calendar.here("Monday 9:30am").toDate() != calendar.there("Monday 9:30am").toDate();
+    calendar.here({ year: 2015, month: 1, day: 1 }).toDate() != calendar.there({ year: 2015, month: 1, day: 1 }).toDate();
+    
+    // Universal Formats
+    var offset = (new Date()).getTime();
+    calendar.here(offset).toDate() == calendar.there(offset).toDate();
+    calendar.here("Sep 1 2015 4:00 pm").toDate() == calendar.there(calendar.here("Sep 1 2015 4:00 pm")).toDate();
+    calendar.here(new Date()).toDate() == calendar.there(new Date()).toDate();
 
 
-## Custom Calendars
 
-The Calendar class consumes a standard market locale object interface and uses [sugar](http://sugarjs.com/dates) 
-and [moment](http://momentjs.com/) to parse and comprehend dates and times.
+## How do I extend it?
+
+The Calendar class consumes a standard market locale object interface.
 
     var fincal = require("fincal");
     
