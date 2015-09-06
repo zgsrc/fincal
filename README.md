@@ -2,6 +2,17 @@
 
 Market calendar and trading hours.
 
+Support for equity markets in:
+* New York
+* London
+* Paris
+* Frankfurt
+* Hong Kong
+* Shanghai
+* Tokyo
+* Sydney
+
+
 ## How do I get it?
 
 Install with npm:
