@@ -135,26 +135,44 @@ and [moment](http://momentjs.com/) to parse and comprehend dates and times.
 To create a custom calendar, you just need to supply the Calendar constructor or fincal.import() method 
 with a compatible Locale object.
 
+##### How it works?
+> ** timezone **
+> The timezone for the locale in format [Continent]/[City].
+> ** regularTradingDays **
+> The base assumption of what constitutes a trading day.
+> ** regularTradingHours **
+> The base assumption of what constitutes regular trading hours.
+> ** extendedTradingHours **
+> Extended trading hours on full trading days.
+> ** partialTradingDays **
+> Days on which different hours than regularTradingHours are observed.
+> ** partialTradingHours **
+> Trading hours used on a partial trading day.
+> ** holidays **
+> Days on which no trading takes place.  These dates may otherwise be regularTradingDays. 
+
+##### Calendar Example
+
     var locale = {
-        timezone = "America/New_York",
-        regularTradingDays = "Weekday",
-        regularTradingHours = [
+        timezone: "America/New_York",
+        regularTradingDays: "Weekday",
+        regularTradingHours: [
             { from: "9:00 am", to: "5:30 pm" }
         ],
-        extendedTradingHours = [
+        extendedTradingHours: [
             { from: "4:00 am", to: "9:30 am" },
             { from: "4:00 pm", to: "8:00 pm" }
         ],
-        partialTradingDays = {
+        partialTradingDays: {
             2015: {
                 November: [ 27 ],
                 December: [ 24 ]
             }
         },
-        partialTradingHours = [
+        partialTradingHours: [
             { from: "9:30 am", to: "1:00 pm" }
         ],
-        holidays = {
+        holidays: {
             2015: {
                 January: [ 1 ],
                 April: [ 3, 6 ],
