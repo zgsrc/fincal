@@ -80,20 +80,30 @@ Download over HTTPS:
     
 #### Parameters
 
-> ##### extended
+##### extended
 > A boolean flag indicating whether the call applies to regular trading hours (false or omitted) or extended trading hours (true).
-          
-> ##### date
+
+
+##### date
+> Flexible-format anchor date for the calculation.  When optional and omitted, calls use currentTime().
+
+> Value can be:
+
 > * Javascript date (i.e. new Date()), 
-> * [Sugary date string](http://sugarjs.com/dates), 
 > * Unix time (milliseconds since the epoch), 
+> Javascript dates and unix timestamps have implicit timezones and will be converted to the calendar timezone.
+changing the display time (e.g. January 1st 11pm in New York is January 2nd in London).
+
+> * [Sugar-y date string](http://sugarjs.com/dates), 
+> * Valid [date structure](http://momentjs.com/docs/#/parsing/object/)
+> Strings and date structures are interpreted as local to the calendar timezone (e.g. "Tuesday" means midnight on Tuesday there).
+
 > * [Moment](http://momentjs.com/docs/#/parsing/)
-> * [Moment with Timezone](http://momentjs.com/timezone/docs/#/using-timezones/)
-> * Valid [moment object](http://momentjs.com/docs/#/parsing/object/)
-> When optional and omitted, calls use currentTime().
->
-> Strings, unix times, and moment objects which omit a timezone will be interpreted as local to the calendar timezone.
-> Javascript dates will be converted to the calendar timezone, effectively changing the time.
+> * [Moment with Timezone](http://momentjs.com/timezone/docs/#/using-timezones/) 
+> Moments and moments with timezones have explicit timezones and are converted to the calendar timezone.
+
+> **TIP:** Use strings and objects to talk about relative and absolute times "over there".  Use date objects and unix offsets 
+to convert dates and times "here".  For advanced control, use moments.
 
 ## How do you do it?
 

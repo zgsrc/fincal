@@ -6,24 +6,30 @@ module.exports = function(name, locale) {
     
     var me = this;
     
+    
+    ////////////////////////////////////////////////////////////
+    // LOCALE
+    ////////////////////////////////////////////////////////////
     this.name = name.titleize();
     
     this.locale = locale;
     
-    this.currentTime = function() {
-        return moment().tz(locale.timezone);
-    };
-    
     function localize(date) {
         if (date) {
             if (moment.isMoment(date)) {
-                return date;
+                return date.clone().tz(locale.timezone);
             }
-            if (Object.isString(date) || Object.isNumber(date)) {
-                return moment(Date.create(date)).tz(locale.timezone);
+            else if (Object.isString(date)) {
+                return moment.tz(Date.create(date).format('{yyyy}-{MM}-{dd}T{HH}:{mm}:{ss}'), locale.timezone);
             }
-            else if (Object.isDate(date) || Object.isObject(date)) {
-                return moment(date).tz(locale.timezone);
+            else if (Object.isNumber(date)) {
+                return moment.tz(Date.create(date), locale.timezone);
+            }
+            else if (Object.isObject(date)) {
+                return moment.tz(date, locale.timezone);
+            }
+            else if (Object.isDate(date)) {
+                return moment.tz(date, locale.timezone);
             }
             else {
                 throw new Error("Unrecognized date " + date);
@@ -33,6 +39,40 @@ module.exports = function(name, locale) {
     }
     
     this.localize = localize;
+    
+    this.currentTime = function() {
+        return moment().tz(locale.timezone);
+    };
+    
+    
+    
+    ////////////////////////////////////////////////////////////
+    // SIMPLE INTERFACE
+    ////////////////////////////////////////////////////////////
+    this.areMarketsOpenToday = function() {
+        return me.isTradingDay();
+    };
+    
+    this.areMarketsOpenOn = function(date) {
+        return me.isTradingDay(date);
+    };
+    
+    this.areMarketsOpenNow = function(extended) {
+        return me.isTradingSession(extended);
+    };
+    
+    this.areMarketsOpenAt = function(datetime, extended) {
+        return me.isTradingSession(datetime, extended);
+    };
+    
+    
+    
+    ////////////////////////////////////////////////////////////
+    // TRADING DAY METHODS
+    ////////////////////////////////////////////////////////////
+    this.isTradingDay = function(date) {
+        return me.isRegularTradingDay(date) || !me.isHoliday(date);
+    };
     
     this.isRegularTradingDay = function(date) {
         if (locale.regularTradingDays) {
@@ -55,18 +95,14 @@ module.exports = function(name, locale) {
     this.isPartialTradingDay = function(date) {
         if (locale.partialTradingDays) {
             var time = localize(date),
-                holidays = locale.partialTradingDays[time.year()];
+                partialDays = locale.partialTradingDays[time.year()];
 
-            if (holidays) holidays = holidays[time.format("MMMM")];
+            if (partialDays) partialDays = partialDays[time.format("MMMM")];
 
-            if (holidays) return holidays.indexOf(time.date()) >= 0;
+            if (partialDays) return partialDays.indexOf(time.date()) >= 0;
             else return false;
         }
         else return false;
-    };
-    
-    this.isTradingDay = function(date) {
-        return me.isRegularTradingDay(date) || me.isPartialTradingDay(date);
     };
     
     this.isHoliday = function(date) {
@@ -82,6 +118,161 @@ module.exports = function(name, locale) {
         else return false;
     };
     
+    this.nextTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 10; i++) {
+            if (me.isTradingDay(date)) return date;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next trading day.");
+    };
+    
+    this.nextFullTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 10; i++) {
+            if (me.isTradingDay(date) && !me.isPartialTradingDay(date)) return date;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next trading day.");
+    };
+    
+    this.nextRegularTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 10; i++) {
+            if (me.isRegularTradingDay(date)) return date;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next regular trading day.");
+    };
+    
+    this.nextPartialTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 700; i++) {
+            if (me.isPartialTradingDay(date)) return date;
+            else date = date.add(1, "day");
+        }
+        
+        return false;
+    };
+    
+    this.nextHoliday = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 400; i++) {
+            if (me.isHoliday(date)) return date;
+            else date = date.add(1, "day");
+        }
+        
+        throw new Error("Could not find next holiday.");
+    };
+    
+    this.previousTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 10; i++) {
+            if (me.isTradingDay(date)) return date;
+            else date = date.subtract(1, "day");
+        }
+        
+        throw new Error("Could not find next trading day.");
+    };
+    
+    this.previousFullTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 10; i++) {
+            if (me.isTradingDay(date) && !me.isPartialTradingDay(date)) return date;
+            else date = date.subtract(1, "day");
+        }
+        
+        throw new Error("Could not find next trading day.");
+    };
+    
+    this.previousRegularTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 10; i++) {
+            if (me.isRegularTradingDay(date)) return date;
+            else date = date.subtract(1, "day");
+        }
+        
+        throw new Error("Could not find next regular trading day.");
+    };
+    
+    this.previousPartialTradingDay = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 700; i++) {
+            if (me.isPartialTradingDay(date)) return date;
+            else date = date.subtract(1, "day");
+        }
+        
+        return false;
+    };
+    
+    this.previousHoliday = function(date) {
+        date = localize(date);
+        date.hour(0);
+        date.minute(0);
+        date.second(0);
+        date.millisecond(0);
+        
+        for (var i = 0; i < 400; i++) {
+            if (me.isHoliday(date)) return date;
+            else date = date.subtract(1, "day");
+        }
+        
+        throw new Error("Could not find next holiday.");
+    };
+    
+    
+    
+    ////////////////////////////////////////////////////////////
+    // TRADING HOURS METHODS
+    ////////////////////////////////////////////////////////////
     this.isRegularTradingHours = function(date) {
         if (locale.regularTradingHours) {
             var time = localize(date),
@@ -142,353 +333,334 @@ module.exports = function(name, locale) {
         else return false;
     };
     
-    this.areMarketsOpenOn = function(date) {
-        if (me.isHoliday(date)) return false;
-        else if (me.isPartialTradingDay(date)) return true;
-        else return me.isRegularTradingDay(date);
+    this.regularTradingHoursDuration = function() {
+        return locale.regularTradingHours.sum(function(session) {
+            return Date.range(session.from, session.to).span();
+        });
     };
     
-    this.areMarketsOpenAt = function(datetime, extended) {
-        if (me.isHoliday(datetime)) {
-            return false;
+    this.extendedTradingHoursDuration = function() {
+        return locale.extendedTradingHours.sum(function(session) {
+            return Date.range(session.from, session.to).span();
+        });
+    };
+    
+    this.partialTradingHoursDuration = function() {
+        return locale.partialTradingHours.sum(function(session) {
+            return Date.range(session.from, session.to).span();
+        });
+    };
+    
+    
+    
+    ////////////////////////////////////////////////////////////
+    // TRADING SESSION METHODS
+    ////////////////////////////////////////////////////////////
+    this.isTradingSession = function(date, extended) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = me.currentTime();
         }
-        else if (me.isPartialTradingDay(datetime)) {
-            return me.isPartialTradingHours(datetime);
-        }
-        else if (me.isRegularTradingDay(datetime)) {
-            if (extended) return me.isExtendedTradingHours(datetime);
-            else return me.isRegularTradingHours(datetime);
+        
+        if (me.isHoliday(date)) return false;
+        else if (me.isPartialTradingDay(date)) return me.isPartialTradingHours(date);
+        else if (me.isRegularTradingDay(date)) {
+            if (extended) return me.isExtendedTradingHours(date);
+            else return me.isRegularTradingHours(date);
         }
         else return false;
     };
     
-    this.totalTradingTimeOn = function(date, extended) {
+    this.isRegularTradingSession = function(date) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = me.currentTime();
+        }
+        
+        if (me.isHoliday(date)) return false;
+        else if (me.isPartialTradingDay(date)) return false;
+        else if (me.isRegularTradingDay(date)) return me.getRegularTradingDuration(date);
+        else return false;
+    };
+    
+    this.isExtendedTradingSession = function(date) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = me.currentTime();
+        }
+        
+        if (me.isHoliday(date)) return false;
+        else if (me.isPartialTradingDay(date)) return false;
+        else if (me.isRegularTradingDay(date)) return me.isExtendedTradingHours(date);
+        else return false;
+    };
+    
+    this.isPartialTradingSession = function(date) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = me.currentTime();
+        }
+        
+        if (me.isPartialTradingDay(date)) return me.isPartialTradingHours(date);
+        else return false;
+    };
+    
+    this.tradingSession = function(date, extended) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = null;
+        }
+        
+        var local = Date.create(localize(date).format("hh:mm")),
+            session = null;
+        
         if (me.isHoliday(date)) {
-            return 0;
+            return null;
         }
         else if (me.isPartialTradingDay(date)) {
-            return locale.partialTradingHours.sum(function(session) {
-                return Date.range(session.from, session.to).span();
+            session = locale.partialTradingHours.find(function(session) {
+                return Date.create(session.from).isBefore(local) && Date.create(session.to).isAfter(local);
             });
         }
         else if (me.isRegularTradingDay(date)) {
             if (extended) {
-                return locale.extendedTradingHours.sum(function(session) {
-                    return Date.range(session.from, session.to).span();
+                session = locale.extendedTradingHours.find(function(session) {
+                    return Date.create(session.from).isBefore(local) && Date.create(session.to).isAfter(local);
                 });
             }
-            else {
-                return locale.regularTradingHours.sum(function(session) {
-                    return Date.range(session.from, session.to).span();
-                });
-            }
-        }
-        else return 0;
-    };
-    
-    this.areMarketsOpenToday = function() {
-        if (me.isHoliday()) return false;
-        else if (me.isPartialTradingDay()) return true;
-        else return me.isRegularTradingDay();
-    };
-    
-    this.areMarketsOpenNow = function(extended) {
-        if (me.isHoliday()) {
-            return false;
-        }
-        else if (me.isPartialTradingDay()) {
-            return me.isPartialTradingHours();
-        }
-        else if (me.isRegularTradingDay()) {
-            if (extended) return me.isExtendedTradingHours();
-            else return me.isRegularTradingHours();
-        }
-        else return false;
-    };
-    
-    this.totalTradingTimeToday = function(extended) {
-        if (me.isHoliday()) {
-            return 0;
-        }
-        else if (me.isPartialTradingDay()) {
-            return locale.partialTradingHours.sum(function(session) {
-                return Date.range(session.from, session.to).span();
-            });
-        }
-        else if (me.isRegularTradingDay()) {
-            if (extended) {
-                return locale.extendedTradingHours.sum(function(session) {
-                    return Date.range(session.from, session.to).span();
-                });
-            }
-            else {
-                return locale.regularTradingHours.sum(function(session) {
-                    return Date.range(session.from, session.to).span();
+            
+            if (!session) {
+                session = locale.regularTradingHours.find(function(session) {
+                    return Date.create(session.from).isBefore(local) && Date.create(session.to).isAfter(local);
                 });
             }
         }
-        else return 0;
-    };
-    
-    this.timeElapsedInTradingDay = function(extended) {
-        var now = me.currentTime(),
-            local = Date.create(now.format("hh:mm"));
         
-        if (me.isHoliday()) {
-            return 0;
+        if (session) {
+            var from = Date.create(session.from);
+            session.start = moment(date);
+            session.start.hour(from.getHours());
+            session.start.minute(from.getMinutes());
+            session.start.second(0);
+            session.start.millisecond(0);
+            
+            var to = Date.create(session.to);
+            session.end = moment(date);
+            session.end.hour(to.getHours());
+            session.end.minute(to.getMinutes());
+            session.end.second(0);
+            session.end.millisecond(0);
         }
-        else if (me.isPartialTradingDay()) {
-            return locale.partialTradingHours.sum(function(session) {
-                if (Date.create(session.from).isAfter(local)) return 0;
-                else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
-                else return Date.range(session.from, local).span();
-            });
+        
+        return session;
+    };
+    
+    this.tradingSessions = function(date, extended) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = me.currentTime();
         }
-        else if (me.isRegularTradingDay()) {
+        
+        var sessions = [ ];
+        if (me.isHoliday(date)) {
+            sessions = [ ];
+        }
+        else if (me.isPartialTradingDay(date)) {
+            sessions = locale.partialTradingHours;
+        }
+        else if (me.isRegularTradingDay(date)) {
             if (extended) {
-                return locale.extendedTradingHours.sum(function(session) {
-                    if (Date.create(session.from).isAfter(local)) return 0;
-                    else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
-                    else return Date.range(session.from, local).span();
+                sessions = locale.extendedTradingHours.union(locale.regularTradingHours).sortBy(function(session) {
+                    return Date.create(session.to).getTime();
                 });
             }
             else {
-                return locale.regularTradingHours.sum(function(session) {
-                    if (Date.create(session.from).isAfter(local)) return 0;
-                    else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
-                    else return Date.range(session.from, local).span();
-                });
+                sessions = locale.regularTradingHours;
             }
         }
-        else return 0;
-    };
-    
-    this.timeRemainingInTradingDay = function(extended) {
-        return me.totalTradingTimeToday(extended) - me.timeElapsedInTradingDay(extended);
-    };
-    
-    this.totalTimeInCurrentSession = function(extended) {
-        var now = me.currentTime(),
-            local = Date.create(now.format("hh:mm"));
         
-        if (me.isHoliday()) {
-            return 0;
+        return sessions.map(function(session) {
+            var from = Date.create(session.from);
+            session.start = moment(date);
+            session.start.hour(from.getHours());
+            session.start.minute(from.getMinutes());
+            session.start.second(0);
+            session.start.millisecond(0);
+            
+            var to = Date.create(session.to);
+            session.end = moment(date);
+            session.end.hour(to.getHours());
+            session.end.minute(to.getMinutes());
+            session.end.second(0);
+            session.end.millisecond(0);
+            
+            return session;
+        });
+    };
+    
+    this.elapsedTradingSessions = function(date, extended) {
+        var sessions = me.tradingSessions(date, extended),
+            session = me.tradingSession(date, extended);
+        
+        if (session) {
+            var index = sessions.findIndex(session);
+            if (index > 0) return sessions.to(index - 1);
+            else return [ ];
         }
-        else if (me.isPartialTradingDay()) {
-            var session = locale.partialTradingHours.find(function(session) {
-                if (Date.create(session.from).isAfter(local)) return false;
-                else if (Date.create(session.to).isBefore(local)) return false;
-                else return true;
+        else {
+            var index = sessions.findIndex(function(session) {
+                return Date.create(session.from).isAfter(local) && Date.create(session.to).isAfter(local);
             });
             
-            if (session) return Date.range(session.from, session.to).span();
-            else return 0;
+            if (index > 0) session.to(index - 1);
+            else return [ ];
         }
-        else if (me.isRegularTradingDay()) {
-            if (extended) {
-                var session = locale.extendedTradingHours.find(function(session) {
-                    if (Date.create(session.from).isAfter(local)) return false;
-                    else if (Date.create(session.to).isBefore(local)) return false;
-                    else return true;
-                });
-
-                if (session) return Date.range(session.from, session.to).span();
-                else return 0;
-            }
-            else {
-                var session = locale.regularTradingHours.find(function(session) {
-                    if (Date.create(session.from).isAfter(local)) return false;
-                    else if (Date.create(session.to).isBefore(local)) return false;
-                    else return true;
-                });
-
-                if (session) return Date.range(session.from, session.to).span();
-                else return 0;
-            }
-        }
-        else return 0;
     };
     
-    this.timeElapsedInCurrentSession = function(extended) {
-        var now = me.currentTime(),
-            local = Date.create(now.format("hh:mm"));
+    this.commencedTradingSessions = function(date, extended) {
+        var sessions = me.tradingSessions(date, extended),
+            session = me.tradingSession(date, extended);
         
-        if (me.isHoliday()) {
-            return 0;
+        if (session) {
+            var index = sessions.findIndex(session);
+            if (index >= 0) return sessions.to(index);
+            else return [ ];
         }
-        else if (me.isPartialTradingDay()) {
-            var session = locale.partialTradingHours.find(function(session) {
-                if (Date.create(session.from).isAfter(local)) return false;
-                else if (Date.create(session.to).isBefore(local)) return false;
-                else return true;
+        else {
+            var index = sessions.findIndex(function(session) {
+                return Date.create(session.from).isAfter(local) && Date.create(session.to).isAfter(local);
             });
             
-            if (session) return Date.range(session.from, local).span();
-            else return 0;
+            if (index >= 0) session.to(index);
+            else return [ ];
         }
-        else if (me.isRegularTradingDay()) {
-            if (extended) {
-                var session = locale.extendedTradingHours.find(function(session) {
-                    if (Date.create(session.from).isAfter(local)) return false;
-                    else if (Date.create(session.to).isBefore(local)) return false;
-                    else return true;
-                });
-
-                if (session) return Date.range(session.from, local).span();
-                else return 0;
-            }
-            else {
-                var session = locale.regularTradingHours.find(function(session) {
-                    if (Date.create(session.from).isAfter(local)) return false;
-                    else if (Date.create(session.to).isBefore(local)) return false;
-                    else return true;
-                });
-
-                if (session) return Date.range(session.from, local).span();
-                else return 0;
-            }
+    };
+    
+    this.remainingTradingSessions = function(date, extended) {
+        var sessions = me.tradingSessions(date, extended),
+            session = me.tradingSession(date, extended);
+        
+        if (session) {
+            return sessions.from(sessions.findIndex(session) + 1);
+        }
+        else {
+            return sessions.from(sessions.findIndex(function(session) {
+                return Date.create(session.from).isAfter(local) && Date.create(session.to).isAfter(local);
+            }));
+        }
+    };
+    
+    this.nextTradingSession = function(date, extended) {
+        var sessions = me.remainingTradingSessions(date, extended);
+        if (sessions.length) {
+            return sessions.first();
+        }
+        else {
+            date = nextTradingDay(date);
+            sessions = me.tradingSessions(date, extended);
+            return sessions.first();
+        }
+    };
+    
+    this.previousTradingSession = function(date, extended) {
+        var sessions = me.elapsedTradingSessions(date, extended);
+        if (sessions.length) {
+            return sessions.last();
+        }
+        else {
+            date = previousTradingDay(date);
+            sessions = me.tradingSessions(date, extended);
+            return sessions.last();
+        }
+    };
+    
+    
+    
+    ////////////////////////////////////////////////////////////
+    // TRADING DURATION METHODS
+    ////////////////////////////////////////////////////////////
+    this.tradingHoursDuration = function(date, extended) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = me.currentTime();
+        }
+        
+        if (me.isHoliday(date)) return 0;
+        else if (me.isPartialTradingDay(date)) return me.partialTradingDuration(date);
+        else if (me.isRegularTradingDay(date)) {
+            if (extended) return me.regularTradingDuration(date) + me.extendedTradingDuration(date);
+            else return me.regularTradingDuration(date);
         }
         else return 0;
     };
     
-    this.timeRemainingInCurrentSession = function(extended) {
-        return me.totalTimeInCurrentSession() - me.timeElapsedInCurrentSession();
+    this.timeElapsedInRegularTradingHours = function(date) {
+        var local = Date.create(localize(date).format("hh:mm"));
+        return locale.regularTradingHours.sum(function(session) {
+            if (Date.create(session.from).isAfter(local)) return 0;
+            else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
+            else return Date.range(session.from, local).span();
+        });
     };
     
-    this.nextTradingDay = function(date) {
-        date = localize(date);
-        for (var i = 0; i < 400; i++) {
-            if (me.isTradingDay(date)) return true;
-            else date = date.add(1, "day");
+    this.timeElapsedInExtendedTradingHours = function(date) {
+        var local = Date.create(localize(date).format("hh:mm"));
+        return locale.extendedTradingHours.sum(function(session) {
+            if (Date.create(session.from).isAfter(local)) return 0;
+            else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
+            else return Date.range(session.from, local).span();
+        });
+    };
+    
+    this.timeElapsedInPartialTradingHours = function(date) {
+        var local = Date.create(localize(date).format("hh:mm"));
+        return locale.partialTradingHours.sum(function(session) {
+            if (Date.create(session.from).isAfter(local)) return 0;
+            else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
+            else return Date.range(session.from, local).span();
+        });
+    };
+    
+    this.timeElapsedInTradingDay = function(date, extended) {
+        if (Object.isBoolean(date) && extended === undefined) {
+            extended = date;
+            date = null;
         }
         
-        throw new Error("Could not find next trading day.");
+        if (me.isHoliday(date)) {
+            return 0;
+        }
+        else if (me.isPartialTradingDay(date)) {
+            return me.timeElapsedInPartialTradingHours(date);
+        }
+        else if (me.isRegularTradingDay(date)) {
+            return me.timeElapsedInRegularTradingHours(date) + (extended ? me.timeElapsedInExtendedTradingHours(date) : 0);
+        }
+        else return 0;
     };
     
-    this.nextTradingSession = function(date) {
-        date = localize(date);
+    this.timeRemainingInTradingDay = function(date, extended) {
+        return me.tradingHoursDuration(date, extended) - me.timeElapsedInTradingDay(date, extended);
+    };
+    
+    this.tradingSessionDuration = function(date, extended) {
+        var session = me.tradingSession(date, extended);
+        if (session) return Date.range(session.from, session.to).span();
+        else return 0;
+    };
+    
+    this.timeElapsedInTradingSession = function(date, extended) {
+        var session = me.tradingSession(date, extended),
+            local = Date.create(localize(date).format("hh:mm"));
         
-        var local = Date.create(date.format("hh:mm"));
-        
-        for (var i = 0; i < 400; i++) {
-            if (me.isTradingDay(date)){
-                if (me.isPartialTradingDay()) {
-                    var session = locale.partialTradingHours.find(function(session) {
-                        if (Date.create(session.from).isAfter(local)) return false;
-                        else if (Date.create(session.to).isBefore(local)) return false;
-                        else return true;
-                    });
+        if (session) return Date.range(session.from, local).span();
+        else return 0;
+    };
+    
+    this.timeRemainingInTradingSession = function(date, extended) {
+        return me.tradingSessionDuration(date, extended) - me.timeElapsedInTradingSession(date, extended);
+    };
+    
 
-                    return { date: date, session: session };
-                }
-                else { // if (me.isRegularTradingDay()) {
-                    if (extended) {
-                        var session = locale.extendedTradingHours.find(function(session) {
-                            if (Date.create(session.from).isAfter(local)) return false;
-                            else if (Date.create(session.to).isBefore(local)) return false;
-                            else return true;
-                        });
 
-                        return { date: date, session: session };
-                    }
-                    else {
-                        var session = locale.regularTradingHours.find(function(session) {
-                            if (Date.create(session.from).isAfter(local)) return false;
-                            else if (Date.create(session.to).isBefore(local)) return false;
-                            else return true;
-                        });
-
-                        return { date: date, session: session };
-                    }
-                }
-            }
-            else date = date.add(1, "day");
-        }
-        
-        throw new Error("Could not find next trading session.");
-    };
-    
-    this.nextRegularTradingDay = function(date) {
-        date = localize(date);
-        for (var i = 0; i < 400; i++) {
-            if (me.isRegularTradingDay(date)) return true;
-            else date = date.add(1, "day");
-        }
-        
-        throw new Error("Could not find next regular trading day.");
-    };
-    
-    this.nextTradingSession = function(date) {
-        date = localize(date);
-        
-        var local = Date.create(date.format("hh:mm"));
-        
-        for (var i = 0; i < 400; i++) {
-            if (me.isRegularTradingDay(date)){
-                if (extended) {
-                    var session = locale.extendedTradingHours.find(function(session) {
-                        if (Date.create(session.from).isAfter(local)) return false;
-                        else if (Date.create(session.to).isBefore(local)) return false;
-                        else return true;
-                    });
-
-                    return { date: date, session: session };
-                }
-                else {
-                    var session = locale.regularTradingHours.find(function(session) {
-                        if (Date.create(session.from).isAfter(local)) return false;
-                        else if (Date.create(session.to).isBefore(local)) return false;
-                        else return true;
-                    });
-
-                    return { date: date, session: session };
-                }
-            }
-            else date = date.add(1, "day");
-        }
-        
-        throw new Error("Could not find next trading session.");
-    };
-    
-    this.nextPartialTradingDay = function(date) {
-        date = localize(date);
-        for (var i = 0; i < 400; i++) {
-            if (me.isPartialTradingDay(date)) return true;
-            else date = date.add(1, "day");
-        }
-        
-        throw new Error("Could not find next partial trading day.");
-    };
-    
-    this.nextPartialTradingSession = function(date) {
-        date = localize(date);
-        
-        var local = Date.create(date.format("hh:mm"));
-        
-        for (var i = 0; i < 400; i++) {
-            if (me.isPartialTradingDay(date)){
-                var session = locale.partialTradingHours.find(function(session) {
-                    if (Date.create(session.from).isAfter(local)) return false;
-                    else if (Date.create(session.to).isBefore(local)) return false;
-                    else return true;
-                });
-
-                return { date: date, session: session };
-            }
-            else date = date.add(1, "day");
-        }
-        
-        throw new Error("Could not find next trading session.");
-    };
-    
-    this.nextHoliday = function(date) {
-        date = localize(date);
-        for (var i = 0; i < 100; i++) {
-            if (me.isHoliday(date)) return true;
-            else date = date.add(1, "day");
-        }
-        
-        throw new Error("Could not find next holiday.");
-    };
-    
 };
