@@ -1,6 +1,6 @@
 # Financial Calendar
 
-Market calendar and trading hours.
+### Market calendar and trading hours.
 
 Support for equity markets in:
 * New York
