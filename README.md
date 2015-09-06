@@ -133,8 +133,8 @@ The Calendar class consumes a standard market locale object interface.
 To create a custom calendar, you just need to supply the Calendar constructor or fincal.import() method 
 with a compatible Locale object.
 
-A locale begins by defining a timezone.  Then regular trading days and regular trading hours are defined.  
-There are days and times trading USUALLY (but not necessarily) takes place.  Outside of regular trading 
+A locale begins by defining a timezone.  Then regular trading days and regular trading hours are defined.  There 
+are days and times trading USUALLY (but not necessarily) takes place.  Outside of regular trading 
 hours, extendedTradingHours specifies additional sessions (usually with limited participation).  Some 
 regular trading days are holidays, and trading does not occur.  In some markets, days before or after 
 holidays are partialTradingDays that observe partialTradingHours.
