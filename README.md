@@ -30,10 +30,19 @@ Download over HTTPS:
     calendar.areMarketsOpenNow();
     calendar.areMarketsOpenAt([date], [extended]);
     
+    // Examples
+    calendar.areMarketsOpenOn("next monday");
+    calendar.areMarketsOpenOn({ year: 2015, month: 1, day: 1 });
+    calendar.areMarketsOpenAt("Sep 1st, 2015 8:35am", true);
+    calendar.areMarketsOpenAt(new Date("December 17, 1995 03:24:00"));
+    calendar.areMarketsOpenAt(calendar.here("Sep 1st, 2015 8:35am"));
+    
 #### Parameters
 
 ##### date
-> Flexible-format anchor date for the calculation.  When optional and omitted, calls use currentTime().
+> Flexible-format anchor date for the calculation.  When optional and omitted, calls use currentTime().  
+Absolute datetime formats are converted to the local timezone of the calendar.  Relative datetime formats 
+are interpreted as in the local timezone of the calendar.
 
 > Value can be:
 
@@ -41,7 +50,7 @@ Download over HTTPS:
 > * Unix time (milliseconds since the epoch)
 
 > Javascript dates and unix timestamps have implicit timezones and will be converted to the calendar timezone,
-changing the display time (e.g. January 1st 11pm in New York is January 2nd in London).
+changing the display time (e.g. January 1st 11pm in New York is January 2nd 4am in London).
 
 > * [Sugar-y date string](http://sugarjs.com/dates) (e.g. "Monday", "Last Friday in July", "Sep 1 2015 4:00pm")
 > * Valid [date structure](http://momentjs.com/docs/#/parsing/object/) (e.g. { year: 2015, month: 1: day: 1 })
@@ -54,7 +63,7 @@ changing the display time (e.g. January 1st 11pm in New York is January 2nd in L
 > Moments and moments with timezones have explicit timezones and are converted to the calendar timezone.
 
 > **TIP:** Use strings and objects to talk about relative and absolute times "over there".  Use javascript dates and unix offsets 
-to convert dates and times "here".  For advanced control, use moments (described below).
+to convert dates and times "here".  For advanced control, use moments ([described below](#moments-and-timezones)).
 
 
 ##### extended
@@ -123,6 +132,12 @@ The Calendar class consumes a standard market locale object interface.
 
 To create a custom calendar, you just need to supply the Calendar constructor or fincal.import() method 
 with a compatible Locale object.
+
+A locale begins by defining a timezone.  Then regular trading days and regular trading hours are defined.  
+There are days and times trading USUALLY (but not necessarily) takes place.  Outside of regular trading 
+hours, extendedTradingHours specifies additional sessions (usually with limited participation).  Some 
+regular trading days are holidays, and trading does not occur.  In some markets, days before or after 
+holidays are partialTradingDays that observe partialTradingHours.
 
 ##### Example
 
