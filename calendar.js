@@ -2,7 +2,59 @@ require("sugar");
 
 var moment = require("moment-timezone");
 
-module.exports = function(name, locale) {
+exports.here = function(date) {
+    if (date) {
+        if (moment.isMoment(date)) {
+            return moment(date.toDate());
+        }
+        else if (Object.isString(date)) {
+            return moment(Date.create(date));
+        }
+        else if (Object.isNumber(date)) {
+            return moment(date);
+        }
+        else if (Object.isObject(date)) {
+            return moment(date);
+        }
+        else if (Object.isDate(date)) {
+            return moment(date);
+        }
+        else {
+            throw new Error("Unrecognized date " + date);
+        }
+    }
+    else return moment();
+};
+
+exports.there = function(date, timezone) {
+    if (date) {
+        if (moment.isMoment(date)) {
+            return date.clone().tz(timezone);
+        }
+        else if (Object.isString(date)) {
+            return moment.tz(Date.create(date).format('{yyyy}-{MM}-{dd}T{HH}:{mm}:{ss}'), timezone);
+        }
+        else if (Object.isNumber(date)) {
+            return moment.tz(Date.create(date), timezone);
+        }
+        else if (Object.isObject(date)) {
+            return moment.tz(date, timezone);
+        }
+        else if (Object.isDate(date)) {
+            return moment.tz(date, timezone);
+        }
+        else {
+            throw new Error("Unrecognized date " + date);
+        }
+    }
+    else return moment().tz(timezone);
+};
+
+exports.setTimezoneHere = function(tz) {
+    moment.tz.setDefault(tz);
+};
+
+exports.Calendar = function(name, locale) {
     
     var me = this;
     
@@ -14,7 +66,11 @@ module.exports = function(name, locale) {
     
     this.locale = locale;
     
-    function localize(date) {
+    this.currentTime = function() {
+        return moment().tz(locale.timezone);
+    };
+    
+    this.there = function(date) {
         if (date) {
             if (moment.isMoment(date)) {
                 return date.clone().tz(locale.timezone);
@@ -36,13 +92,9 @@ module.exports = function(name, locale) {
             }
         }
         else return me.currentTime();
-    }
-    
-    this.localize = localize;
-    
-    this.currentTime = function() {
-        return moment().tz(locale.timezone);
     };
+        
+    this.here = exports.here;
     
     
     
@@ -71,19 +123,19 @@ module.exports = function(name, locale) {
     // TRADING DAY METHODS
     ////////////////////////////////////////////////////////////
     this.isTradingDay = function(date) {
-        return me.isRegularTradingDay(date) || !me.isHoliday(date);
+        return me.isRegularTradingDay(date) && !me.isHoliday(date);
     };
     
     this.isRegularTradingDay = function(date) {
         if (locale.regularTradingDays) {
             if (Object.isString(locale.regularTradingDays)) {
-                date = localize(date);
+                date = me.there(date);
                 return Date.create(date.format("YYYY-MM-DD"))["is" + locale.regularTradingDays]();
             }
             else if (locale.regularTradingDays.from && locale.regularTradingDays.to) {
                 var from = Date.create(locale.regularTradingDays.from).getDay(),
                     to = Date.create(locale.regularTradingDays.to).getDay(),
-                    day = localize(date).day();
+                    day = me.there(date).day();
                 
                 return day >= from && day <= to;
             }
@@ -94,7 +146,7 @@ module.exports = function(name, locale) {
     
     this.isPartialTradingDay = function(date) {
         if (locale.partialTradingDays) {
-            var time = localize(date),
+            var time = me.there(date),
                 partialDays = locale.partialTradingDays[time.year()];
 
             if (partialDays) partialDays = partialDays[time.format("MMMM")];
@@ -107,7 +159,7 @@ module.exports = function(name, locale) {
     
     this.isHoliday = function(date) {
         if (locale.holidays) {
-            var time = localize(date),
+            var time = me.there(date),
                 holidays = locale.holidays[time.year()];
 
             if (holidays) holidays = holidays[time.format("MMMM")];
@@ -119,7 +171,7 @@ module.exports = function(name, locale) {
     };
     
     this.nextTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -134,7 +186,7 @@ module.exports = function(name, locale) {
     };
     
     this.nextFullTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -149,7 +201,7 @@ module.exports = function(name, locale) {
     };
     
     this.nextRegularTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -164,7 +216,7 @@ module.exports = function(name, locale) {
     };
     
     this.nextPartialTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -179,7 +231,7 @@ module.exports = function(name, locale) {
     };
     
     this.nextHoliday = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -194,7 +246,7 @@ module.exports = function(name, locale) {
     };
     
     this.previousTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -209,7 +261,7 @@ module.exports = function(name, locale) {
     };
     
     this.previousFullTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -224,7 +276,7 @@ module.exports = function(name, locale) {
     };
     
     this.previousRegularTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -239,7 +291,7 @@ module.exports = function(name, locale) {
     };
     
     this.previousPartialTradingDay = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -254,7 +306,7 @@ module.exports = function(name, locale) {
     };
     
     this.previousHoliday = function(date) {
-        date = localize(date);
+        date = me.there(date);
         date.hour(0);
         date.minute(0);
         date.second(0);
@@ -275,7 +327,7 @@ module.exports = function(name, locale) {
     ////////////////////////////////////////////////////////////
     this.isRegularTradingHours = function(date) {
         if (locale.regularTradingHours) {
-            var time = localize(date),
+            var time = me.there(date),
                 hours = locale.regularTradingHours;
             
             return hours.any(function(session) {
@@ -295,7 +347,7 @@ module.exports = function(name, locale) {
     
     this.isExtendedTradingHours = function(date) {
         if (locale.extendedTradingHours) {
-            var time = localize(date),
+            var time = me.there(date),
                 hours = locale.extendedTradingHours;
             
             return hours.any(function(session) {
@@ -315,7 +367,7 @@ module.exports = function(name, locale) {
     
     this.isPartialTradingHours = function(date) {
         if (locale.partialTradingHours) {
-            var time = localize(date),
+            var time = me.there(date),
                 hours = locale.partialTradingHours;
             
             return hours.any(function(session) {
@@ -411,7 +463,7 @@ module.exports = function(name, locale) {
             date = null;
         }
         
-        var local = Date.create(localize(date).format("hh:mm")),
+        var local = Date.create(me.there(date).format("hh:mm")),
             session = null;
         
         if (me.isHoliday(date)) {
@@ -556,7 +608,7 @@ module.exports = function(name, locale) {
             return sessions.first();
         }
         else {
-            date = nextTradingDay(date);
+            date = me.nextTradingDay(date);
             sessions = me.tradingSessions(date, extended);
             return sessions.first();
         }
@@ -568,7 +620,7 @@ module.exports = function(name, locale) {
             return sessions.last();
         }
         else {
-            date = previousTradingDay(date);
+            date = me.previousTradingDay(date);
             sessions = me.tradingSessions(date, extended);
             return sessions.last();
         }
@@ -595,7 +647,7 @@ module.exports = function(name, locale) {
     };
     
     this.timeElapsedInRegularTradingHours = function(date) {
-        var local = Date.create(localize(date).format("hh:mm"));
+        var local = Date.create(me.there(date).format("hh:mm"));
         return locale.regularTradingHours.sum(function(session) {
             if (Date.create(session.from).isAfter(local)) return 0;
             else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
@@ -604,7 +656,7 @@ module.exports = function(name, locale) {
     };
     
     this.timeElapsedInExtendedTradingHours = function(date) {
-        var local = Date.create(localize(date).format("hh:mm"));
+        var local = Date.create(me.there(date).format("hh:mm"));
         return locale.extendedTradingHours.sum(function(session) {
             if (Date.create(session.from).isAfter(local)) return 0;
             else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
@@ -613,7 +665,7 @@ module.exports = function(name, locale) {
     };
     
     this.timeElapsedInPartialTradingHours = function(date) {
-        var local = Date.create(localize(date).format("hh:mm"));
+        var local = Date.create(me.there(date).format("hh:mm"));
         return locale.partialTradingHours.sum(function(session) {
             if (Date.create(session.from).isAfter(local)) return 0;
             else if (Date.create(session.to).isBefore(local)) return Date.range(session.from, session.to).span();
@@ -651,7 +703,7 @@ module.exports = function(name, locale) {
     
     this.timeElapsedInTradingSession = function(date, extended) {
         var session = me.tradingSession(date, extended),
-            local = Date.create(localize(date).format("hh:mm"));
+            local = Date.create(me.there(date).format("hh:mm"));
         
         if (session) return Date.range(session.from, local).span();
         else return 0;

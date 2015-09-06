@@ -1,6 +1,6 @@
 {
   "name": "fincal",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Market holidays and trading hours.",
   "main": "index.js",
   "scripts": {

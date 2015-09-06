@@ -1,5 +1,6 @@
 var fs = require("fs"),
-    Calendar = require("./calendar"),
+    cal = require("./calendar"),
+    Calendar = cal.Calendar,
     cache = { };
 
 exports.Calendar = Calendar;
