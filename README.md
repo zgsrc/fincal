@@ -136,19 +136,25 @@ To create a custom calendar, you just need to supply the Calendar constructor or
 with a compatible Locale object.
 
 ##### How it works?
-> ** timezone **
+> **timezone:**
 > The timezone for the locale in format [Continent]/[City].
-> ** regularTradingDays **
+
+> **regularTradingDays:**
 > The base assumption of what constitutes a trading day.
-> ** regularTradingHours **
+
+> **regularTradingHours:**
 > The base assumption of what constitutes regular trading hours.
-> ** extendedTradingHours **
+
+> **extendedTradingHours:**
 > Extended trading hours on full trading days.
-> ** partialTradingDays **
+
+> **partialTradingDays:**
 > Days on which different hours than regularTradingHours are observed.
-> ** partialTradingHours **
+
+> **partialTradingHours:**
 > Trading hours used on a partial trading day.
-> ** holidays **
+
+> **holidays:**
 > Days on which no trading takes place.  These dates may otherwise be regularTradingDays. 
 
 ##### Calendar Example
