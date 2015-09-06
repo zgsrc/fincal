@@ -12,6 +12,11 @@ Support for equity markets in:
 * Tokyo
 * Sydney
 
+Support for bond markets in:
+* United States
+* United Kingdom
+* Japan
+
 
 ## How do I get it?
 
