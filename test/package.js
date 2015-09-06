@@ -222,6 +222,7 @@ files.forEach(function(file) {
         });
         
         it("should have a working commencedTradingSessions() method.", function() {
+            //console.log(calendar(name).commencedTradingSessions());
             calendar(name).commencedTradingSessions().should.be.an("array");
         });
         

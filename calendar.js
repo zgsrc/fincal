@@ -431,7 +431,7 @@ exports.Calendar = function(name, locale) {
         
         if (me.isHoliday(date)) return false;
         else if (me.isPartialTradingDay(date)) return false;
-        else if (me.isRegularTradingDay(date)) return me.getRegularTradingDuration(date);
+        else if (me.isRegularTradingDay(date)) return me.isRegularTradingHours(date);
         else return false;
     };
     
@@ -502,9 +502,10 @@ exports.Calendar = function(name, locale) {
             session.end.minute(to.getMinutes());
             session.end.second(0);
             session.end.millisecond(0);
+            
+            return session;
         }
-        
-        return session;
+        else return null;
     };
     
     this.tradingSessions = function(date, extended) {
@@ -518,7 +519,7 @@ exports.Calendar = function(name, locale) {
             sessions = [ ];
         }
         else if (me.isPartialTradingDay(date)) {
-            sessions = locale.partialTradingHours;
+            sessions = locale.partialTradingHours.clone();
         }
         else if (me.isRegularTradingDay(date)) {
             if (extended) {
@@ -527,7 +528,7 @@ exports.Calendar = function(name, locale) {
                 });
             }
             else {
-                sessions = locale.regularTradingHours;
+                sessions = locale.regularTradingHours.clone();
             }
         }
         
@@ -556,16 +557,14 @@ exports.Calendar = function(name, locale) {
         
         if (session) {
             var index = sessions.findIndex(session);
-            if (index > 0) return sessions.to(index - 1);
+            if (index > 0) return sessions.to(index);
             else return [ ];
         }
         else {
-            var index = sessions.findIndex(function(session) {
-                return Date.create(session.from).isAfter(local) && Date.create(session.to).isAfter(local);
+            var local = Date.create(me.there(date).format("hh:mm"));
+            return sessions.findAll(function(session) {
+                return Date.create(session.from).isBefore(local) && Date.create(session.to).isBefore(local);
             });
-            
-            if (index > 0) session.to(index - 1);
-            else return [ ];
         }
     };
     
@@ -575,15 +574,16 @@ exports.Calendar = function(name, locale) {
         
         if (session) {
             var index = sessions.findIndex(session);
-            if (index >= 0) return sessions.to(index);
+            if (index >= 0) return sessions.to(index + 1);
             else return [ ];
         }
         else {
+            var local = Date.create(me.there(date).format("hh:mm"));
             var index = sessions.findIndex(function(session) {
-                return Date.create(session.from).isAfter(local) && Date.create(session.to).isAfter(local);
+                return Date.create(session.from).isAfter(local);
             });
             
-            if (index >= 0) session.to(index);
+            if (index >= 0) return sessions.to(index);
             else return [ ];
         }
     };
@@ -596,9 +596,10 @@ exports.Calendar = function(name, locale) {
             return sessions.from(sessions.findIndex(session) + 1);
         }
         else {
-            return sessions.from(sessions.findIndex(function(session) {
+            var local = Date.create(me.there(date).format("hh:mm"));
+            return sessions.findAll(function(session) {
                 return Date.create(session.from).isAfter(local) && Date.create(session.to).isAfter(local);
-            }));
+            });
         }
     };
     
@@ -638,10 +639,10 @@ exports.Calendar = function(name, locale) {
         }
         
         if (me.isHoliday(date)) return 0;
-        else if (me.isPartialTradingDay(date)) return me.partialTradingDuration(date);
+        else if (me.isPartialTradingDay(date)) return me.partialTradingHoursDuration(date);
         else if (me.isRegularTradingDay(date)) {
-            if (extended) return me.regularTradingDuration(date) + me.extendedTradingDuration(date);
-            else return me.regularTradingDuration(date);
+            if (extended) return me.regularTradingHoursDuration(date) + me.extendedTradingHoursDuration(date);
+            else return me.regularTradingHoursDuration(date);
         }
         else return 0;
     };
