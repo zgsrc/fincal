@@ -70,6 +70,109 @@ to convert dates and times "here".  For advanced control, use moments ([describe
 > A boolean flag indicating whether the call applies to regular trading hours (false or omitted) or extended trading hours (true).
 
 
+#### Simple Interface
+
+    calendar.areMarketsOpenToday();
+
+    calendar.areMarketsOpenOn([date]);
+    
+    calendar.areMarketsOpenNow();
+    
+    calendar.areMarketsOpenAt([date], [extended]);
+
+
+#### Trading Day Methods
+    
+    calendar.isTradingDay([date])
+    
+    calendar.isRegularTradingDay([date])
+    
+    calendar.isPartialTradingDay([date])
+    
+    calendar.isHoliday([date])
+    
+    calendar.nextTradingDay([date])
+    
+    calendar.nextFullTradingDay([date])
+    
+    calendar.nextRegularTradingDay([date])
+    
+    calendar.nextPartialTradingDay([date])
+    
+    calendar.nextHoliday([date])
+    
+    calendar.previousTradingDay([date])
+    
+    calendar.previousFullTradingDay([date])
+    
+    calendar.previousRegularTradingDay([date])
+    
+    calendar.previousPartialTradingDay([date])
+    
+    calendar.previousHoliday([date])
+
+
+#### Trading Hours Methods
+
+    calendar.isRegularTradingHours([date])
+    
+    calendar.isExtendedTradingHours([date])
+    
+    calendar.isPartialTradingHours([date])
+    
+    calendar.regularTradingHoursDuration()
+    
+    calendar.extendedTradingHoursDuration()
+    
+    calendar.partialTradingHoursDuration()
+
+
+#### Trading Sessions Methods
+
+    calendar.isTradingSession([date], [extended])
+    
+    calendar.isRegularTradingSession([date])
+    
+    calendar.isExtendedTradingSession([date])
+    
+    calendar.isPartialTradingSession([date])
+    
+    calendar.tradingSession([date], [extended])
+    
+    calendar.tradingSessions([date], [extended])
+    
+    calendar.elapsedTradingSessions([date], [extended])
+    
+    calendar.commencedTradingSessions([date], [extended])
+    
+    calendar.remainingTradingSessions([date], [extended])
+    
+    calendar.nextTradingSession([date], [extended])
+    
+    calendar.previousTradingSession([date], [extended])
+
+
+#### Trading Duration Methods
+
+    calendar.tradingHoursDuration([date], [extended])
+    
+    calendar.timeElapsedInRegularTradingHours([date])
+    
+    calendar.timeElapsedInExtendedTradingHours([date])
+    
+    calendar.timeElapsedInPartialTradingHours([date])
+    
+    calendar.timeElapsedInTradingDay([date], [extended])
+    
+    calendar.timeRemainingInTradingDay([date], [extended])
+    
+    calendar.tradingSessionDuration([date], [extended])
+    
+    calendar.timeElapsedInTradingSession([date], [extended])
+    
+    calendar.timeRemainingInTradingSession([date], [extended])
+
+
 #### Moments and Timezones
 Locally, dates and times are separate things.  Across timezones, they are inextricably linked
 and the logic gets complicated.  Fincal uses [sugar](http://sugarjs.com/dates) 
@@ -135,7 +238,7 @@ with a compatible Locale object.
 
 A locale begins by defining a timezone.  Then regular trading days and regular trading hours are defined.  There 
 are days and times trading USUALLY (but not necessarily) takes place.  Outside of regular trading 
-hours, extendedTradingHours specifies additional sessions (usually with limited participation).  Some 
+hours, extendedTradingHours specify additional sessions (usually with limited participation).  Some 
 regular trading days are holidays, and trading does not occur.  In some markets, days before or after 
 holidays are partialTradingDays that observe partialTradingHours.
 
