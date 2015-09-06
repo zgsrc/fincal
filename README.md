@@ -72,104 +72,151 @@ to convert dates and times "here".  For advanced control, use moments ([describe
 
 #### Simple Interface
 
+    // Are markets open today (where today is 'today there')
     calendar.areMarketsOpenToday();
 
-    calendar.areMarketsOpenOn([date]);
+    // Are markets open on a given date (there).
+    calendar.areMarketsOpenOn(date);
     
+    // Are markets open now (in universal terms)
     calendar.areMarketsOpenNow();
     
+    // Are markets open at a specific date and time, and whether extended trading sessions count.
     calendar.areMarketsOpenAt([date], [extended]);
 
 
 #### Trading Day Methods
     
+    // Is a regular trading day and is not a holiday
     calendar.isTradingDay([date])
     
+    // Is a trading day and is not a partial trading day
+    calendar.isFullTradingDay([date])
+    
+    // Is a regular trading day (though may be a holiday or a partial trading day)
     calendar.isRegularTradingDay([date])
     
+    // Is a partial trading day
     calendar.isPartialTradingDay([date])
     
+    // Is a holiday
     calendar.isHoliday([date])
     
+    // Next full or partial trading day
     calendar.nextTradingDay([date])
     
+    // Next full trading day
     calendar.nextFullTradingDay([date])
     
+    // Next regular trading day (though may be a holiday or a partial trading day)
     calendar.nextRegularTradingDay([date])
     
+    // Next partial trading day (or false)
     calendar.nextPartialTradingDay([date])
     
+    // Next holiday (or false)
     calendar.nextHoliday([date])
     
+    // Previous full or partial trading day
     calendar.previousTradingDay([date])
     
+    // Previous full trading day
     calendar.previousFullTradingDay([date])
     
+    // Previous regular trading day (though may be a holiday or a partial trading day)
     calendar.previousRegularTradingDay([date])
     
+    // Previous partial trading day (or false)
     calendar.previousPartialTradingDay([date])
     
+    // Previous holiday (or false)
     calendar.previousHoliday([date])
 
 
 #### Trading Hours Methods
 
+    // Is within regular trading hours (regardless of date)
     calendar.isRegularTradingHours([date])
     
+    // Is within extended trading hours (not including regular trading hours) (regardless of date)
     calendar.isExtendedTradingHours([date])
     
+    // Is within partial trading hours (regardless of date)
     calendar.isPartialTradingHours([date])
     
+    // Milliseconds of trading time during regular trading sessions
     calendar.regularTradingHoursDuration()
     
+    // Milliseconds of trading time during extended trading sessions
     calendar.extendedTradingHoursDuration()
     
+    // Milliseconds of trading time during a partial trading day
     calendar.partialTradingHoursDuration()
 
 
 #### Trading Sessions Methods
 
+    // Is a trading day and within applicable trading hours
     calendar.isTradingSession([date], [extended])
     
+    // Is full trading day and within regular trading hours
     calendar.isRegularTradingSession([date])
     
+    // Is full trading day and within extended trading hours
     calendar.isExtendedTradingSession([date])
     
+    // Is partial trading day and within partial trading hours
     calendar.isPartialTradingSession([date])
     
+    // Get trading session
     calendar.tradingSession([date], [extended])
     
+    // Get all trading sessions for date
     calendar.tradingSessions([date], [extended])
     
+    // Get elapsed trading sessions for date
     calendar.elapsedTradingSessions([date], [extended])
     
+    // Get commenced trading sessions for date
     calendar.commencedTradingSessions([date], [extended])
     
+    // Get remaining trading sessions for date
     calendar.remainingTradingSessions([date], [extended])
     
+    // Get next trading session
     calendar.nextTradingSession([date], [extended])
     
+    // Get previous trading session
     calendar.previousTradingSession([date], [extended])
 
 
 #### Trading Duration Methods
 
+    // Milliseconds of trading time for date
     calendar.tradingHoursDuration([date], [extended])
     
+    // Milliseconds elapsed of regular trading time (regardless of date)
     calendar.timeElapsedInRegularTradingHours([date])
     
+    // Milliseconds elapsed of extended trading time (regardless of date)
     calendar.timeElapsedInExtendedTradingHours([date])
     
+    // Milliseconds elapsed of partial trading time (regardless of date)
     calendar.timeElapsedInPartialTradingHours([date])
     
+    // Milliseconds elapsed of trading for specific date
     calendar.timeElapsedInTradingDay([date], [extended])
     
+    // Milliseconds remaining of trading time for specific date
     calendar.timeRemainingInTradingDay([date], [extended])
     
+    // Milliseconds of trading time in trading session
     calendar.tradingSessionDuration([date], [extended])
     
+    // Milliseconds of trading time elapsed in trading session
     calendar.timeElapsedInTradingSession([date], [extended])
     
+    // Milliseconds of trading time remaining in trading session
     calendar.timeRemainingInTradingSession([date], [extended])
 
 

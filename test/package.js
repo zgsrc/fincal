@@ -106,6 +106,12 @@ files.forEach(function(file) {
             calendar(name).isTradingDay(Date.create("Jan 16 2015")).should.be.true;
         });
         
+        it("should have a working isFullTradingDay() method.", function() {
+            calendar(name).isFullTradingDay().should.be.a("boolean");
+            calendar(name).isFullTradingDay(Date.create("Jan 1 2017")).should.be.false;
+            calendar(name).isFullTradingDay(Date.create("Jan 16 2015")).should.be.true;
+        });
+        
         it("should have a working isRegularTradingDay() method.", function() {
             calendar(name).isRegularTradingDay().should.be.a("boolean");
             calendar(name).isRegularTradingDay(Date.create("Jan 1 2017")).should.be.false;
