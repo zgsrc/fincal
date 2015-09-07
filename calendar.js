@@ -127,7 +127,7 @@ exports.Calendar = function(name, locale) {
     };
     
     this.isFullTradingDay = function(date) {
-        me.isTradingDay(date) && !me.isPartialTradingDay(date);
+        return me.isTradingDay(date) && !me.isPartialTradingDay(date);
     };
     
     this.isRegularTradingDay = function(date) {
