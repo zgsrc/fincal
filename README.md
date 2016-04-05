@@ -7,6 +7,7 @@ Support for equity markets from 2015 until 2020 in:
 * London
 * Paris
 * Frankfurt
+* Copenhagen
 * Hong Kong
 * Shanghai
 * Tokyo
