@@ -283,6 +283,7 @@ calendar.here("Sep 1 2015 4:00 pm").toDate() == calendar.there(calendar.here("Se
 calendar.here(new Date()).toDate() == calendar.there(new Date()).toDate();
 ```
 
+
 ## How do I extend it?
 
 The Calendar class consumes a standard market locale object interface.
@@ -304,7 +305,7 @@ var someplace = fincal.Someplace = fincal["Someplace"] = fincal.calendar("Somepl
 // Calendar metadata
 console.log(calendar.name); // > "New York"
 console.log(calendar.locale); // > [Object]
-```javascript
+```
 
 To create a custom calendar, you just need to supply the Calendar constructor or fincal.import() method 
 with a compatible Locale object.
@@ -365,6 +366,7 @@ var oneOff = new fincal.Calendar("new_york", locale);
 fincal.import("new_york", locale);
 var loaded = fincal.new_york;
 ```
+
 
 ## License
 
