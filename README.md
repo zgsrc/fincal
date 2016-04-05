@@ -349,7 +349,7 @@ var locale = {
         { from: "9:30 am", to: "1:00 pm" }
     ],
 
-    /* Days on which no trading takes place.  These dates may otherwise be regularTradingDays. *.
+    /* Days on which no trading takes place.  These dates may otherwise be regularTradingDays. */
     holidays: {
         2015: {
             January: [ 1 ],
