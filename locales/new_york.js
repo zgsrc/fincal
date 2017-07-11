@@ -18,6 +18,20 @@ exports.partialTradingDays = {
     },
     2016: {
         November: [ 25 ]
+    },
+    2017: {
+        July: [ 3 ],
+        November: [ 24 ]
+    },
+    2018: {
+        July: [ 3 ],
+        November: [ 23 ],
+        December: [ 24 ]
+    },
+    2019: {
+        July: [ 3 ],
+        November: [ 29 ],
+        December: [ 24 ]
     }
 };
 
