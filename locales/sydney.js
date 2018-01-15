@@ -1,4 +1,4 @@
-exports.timezone = "Asia/Shanghai";
+exports.timezone = "Australia/Sydney";
 
 exports.regularTradingDays = "Weekday";
 
