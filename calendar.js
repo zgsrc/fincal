@@ -341,7 +341,7 @@ exports.Calendar = function(name, locale) {
                 var inSession = 
                     (time.hours() == from.getHours() && time.minutes() >= from.getMinutes()) ||
                     (time.hours() > from.getHours() && time.hours() < to.getHours()) ||
-                    (time.hours() == to.getHours() && time.minutes < to.getMinutes());
+                    (time.hours() == to.getHours() && time.minutes() < to.getMinutes());
                 
                 return inSession;
             });
@@ -361,7 +361,7 @@ exports.Calendar = function(name, locale) {
                 var inSession = 
                     (time.hours() == from.getHours() && time.minutes() >= from.getMinutes()) ||
                     (time.hours() > from.getHours() && time.hours() < to.getHours()) ||
-                    (time.hours() == to.getHours() && time.minutes < to.getMinutes());
+                    (time.hours() == to.getHours() && time.minutes() < to.getMinutes());
                 
                 return inSession;
             });
@@ -381,7 +381,7 @@ exports.Calendar = function(name, locale) {
                 var inSession = 
                     (time.hours() == from.getHours() && time.minutes() >= from.getMinutes()) ||
                     (time.hours() > from.getHours() && time.hours() < to.getHours()) ||
-                    (time.hours() == to.getHours() && time.minutes < to.getMinutes());
+                    (time.hours() == to.getHours() && time.minutes() < to.getMinutes());
                 
                 return inSession;
             });
