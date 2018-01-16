@@ -40,8 +40,8 @@ var calendar = fincal.calendar("new_york") = fincal["new_york"] = fincal.new_yor
 // Simple interface
 calendar.areMarketsOpenToday();
 calendar.areMarketsOpenOn([date]);
-calendar.areMarketsOpenNow();
-calendar.areMarketsOpenAt([date], [extended]);
+calendar.areMarketsOpenNow([extended=false]);
+calendar.areMarketsOpenAt([date], [extended=false]);
 
 // Examples
 calendar.areMarketsOpenOn("next monday");
