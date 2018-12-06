@@ -78,7 +78,7 @@ exports.holidays = {
         July: [ 4 ],
         September: [ 3 ],
         November: [ 22 ],
-        December: [ 25 ]
+        December: [ 5, 25 ]
     },
     2019: {
         January: [ 1, 21 ],
