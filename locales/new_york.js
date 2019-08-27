@@ -32,6 +32,13 @@ exports.partialTradingDays = {
         July: [ 3 ],
         November: [ 29 ],
         December: [ 24 ]
+    },
+    2020: {
+        November: [ 27 ],
+        December: [ 24 ]
+    },
+    2021: {
+        November: [ 26 ]
     }
 };
 
@@ -99,5 +106,15 @@ exports.holidays = {
         September: [ 7 ],
         November: [ 26 ],
         December: [ 25 ]
+    },
+    2021: {
+        January: [ 1, 18 ],
+        February: [ 15 ],
+        April: [ 2 ],
+        May: [ 31 ],
+        July: [ 5 ],
+        September: [ 6 ],
+        November: [ 25 ],
+        December: [ 24 ]
     }
 };
