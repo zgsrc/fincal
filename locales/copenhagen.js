@@ -40,5 +40,18 @@ exports.holidays = {
         June: [ 5 ],
         December: [ 24, 25, 26, 31 ]
     },
-
+    2019: {
+        January: [ 1 ],
+        April: [ 18, 19, 22 ],
+        May: [ 17, 30, 31 ],
+        June: [ 5, 10 ],
+        December: [ 24, 25, 26, 31 ]
+    },
+    2020: {
+        January: [ 1 ],
+        April: [ 9, 10, 13 ],
+        May: [ 8, 21, 22 ],
+        June: [ 1, 5 ],
+        December: [ 24, 25, 26, 31 ]
+    },
 };
