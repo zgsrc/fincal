@@ -1,5 +1,7 @@
 # Financial Calendar
 
+(this is a port of the original project to Python)
+
 ### Market calendar and trading hours.
 
 Support for equity markets from 2015 until 2020 in:
