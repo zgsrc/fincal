@@ -7,7 +7,7 @@ var chai = require("chai"),
 
 chai.should();
 
-var files = fs.readdirSync("./locales").filter(/.*js/);
+var files = fs.readdirSync("./exchanges").filter(/.*js/);
 
 describe("Package", function() {
     files.forEach(function(file) {

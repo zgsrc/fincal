@@ -4,8 +4,11 @@
 
 ### Market calendar and trading hours.
 
-Support for equity markets from 2015 until 2020 in:
+Support for equity markets from 2000 until 2023 in:
+* Chicago
 * New York
+
+Support for equity markets from 2015 until 2020 in:
 * London
 * Paris
 * Frankfurt
@@ -18,13 +21,9 @@ Support for equity markets from 2015 until 2020 in:
 
 ## How do I get it?
 
-Install with npm:
-
-    npm install fincal
-
 Clone repo with git:
 
-    git clone https://github.com/triploc/fincal.git
+    git clone https://github.com/eruditis/fincal.git
 
 Download over HTTPS:
 
