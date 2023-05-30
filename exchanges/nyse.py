@@ -1,5 +1,5 @@
 from exchanges.venue import Venue
-from marketanalysis import marketholidays
+# from marketanalysis import marketholidays
 
 
 """  New York Stock Exchange (NYSE)
@@ -16,13 +16,16 @@ class NYSE(Venue):
         super().__init__(
             timezone="America/New_York",
             regular_trading_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            regular_trading_hours=[{"gte": "9:30 am", "lte": "4:00 pm"}],
+            regular_trading_hours=[{"gte": "9:30 am", "lt": "4:00 pm"}],  # execution must happen before 4pm
             pre_regular_trading_hours=[{"gte": "4:00 am", "lt": "9:30 am"}],
-            post_regular_trading_hours=[{"gt": "4:00 pm", "lte": "8:00 pm"}],
-            default_partial_trading_hours=[{"gte": "9:30 am", "lte": "1:00 pm"}],
+            post_regular_trading_hours=[{"gte": "4:00 pm", "lt": "8:00 pm"}],  # is it lt, or lte?
+            default_partial_trading_hours=[{"gte": "9:30 am", "lt": "1:00 pm"}],
 
             partial_trading_days=self._partial_trading_days(),
-            non_trading_days=self._non_trading_days(),
+            non_trading_days=self._non_trading_days(),  # days trading would normally have happened, but didn't
+            data_provided_from_date="1996-01-01",
+            data_provided_through_date="2017-01-01",
+            market_holidays=1,  # marketholidays,
         )
 
     def _non_trading_days(self):

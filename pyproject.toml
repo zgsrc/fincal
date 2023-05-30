@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "fincal"}]
 
 [tool.poetry.dependencies]
-marketholidays = ">=0.11"
+marketanalysis = { git = "https://github.com/Eruditis/marketanalysis", branch = "main" }
 pandas = "*"
 python = ">=3.10,<3.11.4"
 python-dateutil = "^2.8.2"
