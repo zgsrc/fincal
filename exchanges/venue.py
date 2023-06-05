@@ -24,7 +24,7 @@ class Venue:
         #                                       for trading_hours in default_partial_trading_hours]
         self.regular_trading_days = regular_trading_days
         self.partial_trading_days = partial_trading_days
-        self.non_trading_days = non_trading_days
+        self.irregular_non_trading_days = non_trading_days
         self.data_provided_from_date = data_provided_from_date
         self.data_provided_through_date = data_provided_through_date
         self.market_holidays = market_holidays
@@ -65,15 +65,38 @@ class Venue:
         _, reason = self.get_trading_hours(day)
         return reason == "Regular Trading Day"
 
-    def is_non_trading_day(self, day, reason):
-        # TODO: There should be a reason distinction between regular non-trading (weekends) and irregular non-trading
+    def is_non_trading_day(self, day, reason=None):
         # Is this a day where trading would normally have happened, but for some reason today will not?
-        return day in self.non_trading_days
+        # ?? TODO: should we be respecting "reason" in the case of regular non-trading ??
+        return self.is_irregular_non_trading_day(day, reason) or self.is_regular_non_trading_day(day)
 
-    def is_partial_trading_day(self, day):
+    def is_regular_non_trading_day(self, day):
+        day_of_week = pd.Timestamp(day).day_name()
+        is_regular = day_of_week not in self.regular_trading_days
+        return is_regular, 'Regular trading day'
+
+    def is_irregular_non_trading_day(self, day, reason=None):
+        # Is this a day where trading would normally have happened, but for some reason did|will not this day?
+        day_str = day.strftime('%Y-%m-%d')  # Convert datetime to string
+        irregular_reason = False
+
+        if reason is None:
+            irregular_reason = self.irregular_non_trading_days[day_str]["reason"]
+        elif self.irregular_non_trading_days[day_str]["reason"] == reason:
+            irregular_reason = self.irregular_non_trading_days[day_str]["reason"]
+
+        return (True, irregular_reason) if irregular_reason else (False, 'N/A')
+
+    def is_partial_trading_day(self, day, reason=None):
         # Is this a day where regular trading hours would normally have occurred, but for some reason today will not?
-        return day in self.partial_trading_days
+        regular_reason = False
 
+        if reason is None:
+            regular_reason = self.partial_trading_days[day]["reason"]
+        elif self.partial_trading_days[day]["reason"] == reason:
+            regular_reason = self.partial_trading_days[day]["reason"]
+
+        return (True, regular_reason) if regular_reason else (False, 'N/A')
 
     # TODO: create a "is_trading_moment" sort of function, to say whether trading was active at a given moment
     # Or maybe some interpolation of the expanded from/to intraday ranges, so you get a full and explicit picture of
