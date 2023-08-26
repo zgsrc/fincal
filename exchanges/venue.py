@@ -62,7 +62,7 @@ class Venue:
 
     def is_regular_trading_day(self, day):
         # Is this a day where trading will happen during the usual hours?
-        _, reason = self.get_trading_hours(day)
+        _, reason = self.get_trading_hours(day, 1)
         return reason == "Regular Trading Day"
 
     def is_non_trading_day(self, day, reason=None):
