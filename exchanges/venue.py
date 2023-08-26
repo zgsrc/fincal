@@ -39,8 +39,8 @@ class Venue:
         self.regular_trading_days = data['regular_trading_days']
         self.partial_trading_days = data['partial_trading_days']
         self.irregular_non_trading_days = data['non_trading_days']
-        self.data_provided_from_date = data_provided_from_date
-        self.data_provided_through_date = data_provided_through_date
+        self.data_provided_from_date = data['data_provided_from_date']
+        self.data_provided_through_date = data['data_provided_through_date']
         # self.market_holidays = market_holidays
 
     @staticmethod
