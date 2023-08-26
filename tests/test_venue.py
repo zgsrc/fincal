@@ -4,7 +4,7 @@ import pandas as pd
 
 class TestVenue(unittest.TestCase):
     def setUp(self):
-        self.venue = Venue('exchanges/nyse.yml')
+        self.venue = Venue('../exchanges/nyse.yml')
 
     def test_is_trading_time(self):
         timestamp = pd.Timestamp('2022-01-03 10:00:00')  # A Monday within trading hours
