@@ -4,7 +4,7 @@ import pandas as pd
 
 @pytest.fixture
 def venue():
-    return Venue('../exchanges/nyse.yml')
+    return Venue('correct/path/to/nyse.yml')
 
 def test_is_trading_time(venue):
     timestamp = pd.Timestamp('2022-01-03 10:00:00')  # A Monday within trading hours
