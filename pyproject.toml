@@ -10,6 +10,7 @@ dependencies = [
     "python-dateutil>=2.8.2",
     "pytz>=2023.3",
     "marketanalysis @ git+https://github.com/Eruditis/marketanalysis@main",
+    "pyyaml>=5.4.1",
 ]
 requires-python = ">=3.11,<3.11.4"
 readme = "README.md"
