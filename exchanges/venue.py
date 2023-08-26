@@ -4,7 +4,7 @@ import pandas as pd
 class Venue:
     def __init__(self, timezone, regular_trading_hours, pre_regular_trading_hours, post_regular_trading_hours,
                  default_partial_trading_hours, regular_trading_days, partial_trading_days, non_trading_days,
-                 data_provided_from_date, data_provided_through_date, market_holidays):
+                 data_provided_from_date, data_provided_through_date):  # , market_holidays):
         self.timezone = pytz.timezone(timezone)
         #TODO: This code is brittle, and assumes alignment between the derived class and base class around gte/lte
         self.regular_trading_hours = [

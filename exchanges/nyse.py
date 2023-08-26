@@ -206,7 +206,7 @@ class NYSE(Venue):
     def _intraday_trading_interruptions(self):
         # signals a "trading paused" event, followed by a "trading resumed" or "trading closed" event
         intra_day_interruptions = {
-            "1999-04-26": {"reason": "Columbine", "hours": [{"gte": "12:00 pm", "lt": "12:02 pm"}]}
+            "1999-04-26": {"reason": "Columbine", "hours": [{"gte": "12:00 pm", "lt": "12:02 pm"}]},
             "2000-02-16": {"reason": "Walter N Frank", "hours": [{"gte": "12:00 pm", "lt": "12:01 pm"}]}
         }
 
