@@ -143,6 +143,7 @@ class Venue:
         else:
             # If it's not a regular trading day, return an empty list and "Non-Standard Trading Day" as the reason
             return [], "Non-Regular Trading Day"
+
     @staticmethod
     def _convert_temp_days_to_final_format(temp_dict):
         final_dict = {}
