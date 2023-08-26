@@ -23,7 +23,7 @@ class Venue:
         #TODO: This code is brittle, and assumes alignment between the derived class and base class around gte/lte
         self.regular_trading_hours = [
             {"start": pd.Timestamp(trading_hours["gte"]), "end": pd.Timestamp(trading_hours["lt"])} for
-            trading_hours in regular_trading_hours]
+            trading_hours in data['regular_trading_hours']]
 
         # self.regular_trading_hours = [self._create_date_range(trading_hours)
         #                               for trading_hours in regular_trading_hours]
