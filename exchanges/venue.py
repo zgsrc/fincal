@@ -19,7 +19,7 @@ class Venue:
         self.irregular_non_trading_days = data['non_trading_days']
         self.data_provided_from_date = data['data_provided_from_date']
         self.data_provided_through_date = data['data_provided_through_date']
-        self.timezone = pytz.timezone(timezone)
+        self.timezone = pytz.timezone(data['timezone'])
         #TODO: This code is brittle, and assumes alignment between the derived class and base class around gte/lte
         self.regular_trading_hours = [
             {"start": pd.Timestamp(trading_hours["gte"]), "end": pd.Timestamp(trading_hours["lt"])} for
