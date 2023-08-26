@@ -1,0 +1,8 @@
+timezone: "America/New_York"
+regular_trading_days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+regular_trading_hours: [{"gte": "9:30 am", "lt": "4:00 pm"}]
+default_partial_trading_hours: [{"gte": "9:30 am", "lt": "1:00 pm"}]
+partial_trading_days: {...}  # Add the partial trading days data here
+non_trading_days: {...}  # Add the non-trading days data here
+data_provided_from_date: "1996-01-01"
+data_provided_through_date: "2017-01-01"

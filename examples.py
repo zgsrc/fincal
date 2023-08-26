@@ -3,7 +3,7 @@ from exchanges.nyse import NYSE
 import datetime
 
 # Create an instance of the NYSE class
-nyse = NYSE()
+nyse = Venue('exchanges/nyse.yml')
 
 
 # Objective 1: Be able to "query" for specific events (open/close) for a particular exchange, for a particular day
