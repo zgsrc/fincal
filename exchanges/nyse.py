@@ -25,11 +25,11 @@ class NYSE(Venue):
             non_trading_days=self._non_trading_days(),  # days trading would normally have happened, but didn't
             data_provided_from_date="1996-01-01",
             data_provided_through_date="2017-01-01",
-            market_holidays=1,  # marketholidays,
+            # market_holidays=1,  # marketholidays,
         )
 
     def _non_trading_days(self):
-        # Add all the non-trading days for each year here
+        # Add all the non-trading days for each year here, organized by Reason, MM-DD
         non_trading_days_temp = {
             "New Year's Day": {
                 "01-01": ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006",
@@ -124,6 +124,9 @@ class NYSE(Venue):
 
     def _partial_trading_days(self):
         # Add all the partial trading days for each year here
+        # signals a "trading opened" event, followed by a "trading closed" event
+
+        # put holidays here that conform to 'standard partial trading-day hours
         partial_trading_days_temp = {
             "Day Before Good Friday": {
                 "03-20": ["2008"],
@@ -201,8 +204,10 @@ class NYSE(Venue):
         return {k: expanded_days[k] for k in sorted(expanded_days)}
 
     def _intraday_trading_interruptions(self):
+        # signals a "trading paused" event, followed by a "trading resumed" or "trading closed" event
         intra_day_interruptions = {
-            "2023-11-24": {"reason": "Day After Thanksgiving", "hours": [{"gte": "9:30 am", "lte": "1:00 pm"}]}
+            "1999-04-26": {"reason": "Columbine", "hours": [{"gte": "12:00 pm", "lt": "12:02 pm"}]}
+            "2000-02-16": {"reason": "Walter N Frank", "hours": [{"gte": "12:00 pm", "lt": "12:01 pm"}]}
         }
 
         return intra_day_interruptions

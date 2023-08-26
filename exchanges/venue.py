@@ -27,7 +27,7 @@ class Venue:
         self.irregular_non_trading_days = non_trading_days
         self.data_provided_from_date = data_provided_from_date
         self.data_provided_through_date = data_provided_through_date
-        self.market_holidays = market_holidays
+        # self.market_holidays = market_holidays
 
     @staticmethod
     def _create_date_range(trading_hours):
@@ -102,7 +102,7 @@ class Venue:
     # Or maybe some interpolation of the expanded from/to intraday ranges, so you get a full and explicit picture of
     # 'hours' on any given trading day
 
-    def get_trading_hours(self, day):
+    def get_trading_hours(self, day, type):
         day_of_week = pd.Timestamp(day).day_name()
 
         if self.is_non_trading_day(day):
