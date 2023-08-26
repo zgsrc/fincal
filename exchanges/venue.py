@@ -36,7 +36,7 @@ class Venue:
             trading_hours in data['regular_trading_hours']]
         # self.default_partial_trading_hours = [self._create_date_range(trading_hours)
         #                                       for trading_hours in default_partial_trading_hours]
-        self.regular_trading_days = regular_trading_days
+        self.regular_trading_days = data['regular_trading_days']
         self.partial_trading_days = partial_trading_days
         self.irregular_non_trading_days = non_trading_days
         self.data_provided_from_date = data_provided_from_date
