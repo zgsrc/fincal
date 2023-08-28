@@ -7,7 +7,8 @@ print(f"Current working directory: {os.getcwd()}")
 
 @pytest.fixture
 def venue():
-    return Venue('../exchanges/nyse.yml')
+    print(f"Current working directory: {os.getcwd()}")
+    return Venue('./exchanges/nyse.yml')
 
 def test_is_trading_time(venue):
     timestamp = pd.Timestamp('2022-01-03 10:00:00')  # A Monday within trading hours
