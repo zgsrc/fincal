@@ -1,9 +1,16 @@
+import os
 import pytz
 import pandas as pd
 import yaml
 
+
 class Venue:
     def __init__(self, yaml_file_path):
+        # yaml_file_path = "C:/Repos/fincal/exchanges/nyse.yml"
+        # yaml_file_path = "./exchanges/nyse.yml"
+        print(f"Current yaml_filePath: {yaml_file_path}")
+        print(f"Current working directory for Venue: {os.getcwd()}")
+
         with open(yaml_file_path, 'r') as file:
             data = yaml.safe_load(file)
         
