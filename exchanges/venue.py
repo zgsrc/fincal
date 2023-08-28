@@ -123,7 +123,7 @@ class Venue:
     # Or maybe some interpolation of the expanded from/to intraday ranges, so you get a full and explicit picture of
     # 'hours' on any given trading day
 
-    def get_trading_hours(self, day, type):
+    def get_trading_hours(self, day, type=1):
         day_of_week = pd.Timestamp(day).day_name()
 
         if self.is_non_trading_day(day):
