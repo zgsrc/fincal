@@ -101,10 +101,11 @@ class Venue:
         day_str = day.strftime('%Y-%m-%d')  # Convert datetime to string
         irregular_reason = False
 
-        if reason is None:
-            irregular_reason = self.irregular_non_trading_days[day_str]["reason"]
-        elif self.irregular_non_trading_days[day_str]["reason"] == reason:
-            irregular_reason = self.irregular_non_trading_days[day_str]["reason"]
+        if day_str in self.irregular_non_trading_days:
+            if reason is None:
+                irregular_reason = self.irregular_non_trading_days[day_str]["reason"]
+            elif self.irregular_non_trading_days[day_str]["reason"] == reason:
+                irregular_reason = self.irregular_non_trading_days[day_str]["reason"]
 
         return (True, irregular_reason) if irregular_reason else (False, 'N/A')
 
