@@ -1,6 +1,9 @@
+import os
 import pytest
 from exchanges.venue import Venue
 import pandas as pd
+
+print(f"Current working directory: {os.getcwd()}")
 
 @pytest.fixture
 def venue():
