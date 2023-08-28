@@ -16,10 +16,10 @@ class Venue:
         
         self.timezone = pytz.timezone(data['timezone'])
         self.regular_trading_hours = [
-            {"start": pd.Timestamp(trading_hours["gte"]), "end": pd.Timestamp(trading_hours["lt"])} for
+            {"start": pd.Timestamp(trading_hours["gte"], unit='ns'), "end": pd.Timestamp(trading_hours["lt"], unit='ns')} for
             trading_hours in data['regular_trading_hours']]
         self.default_partial_trading_hours = [
-            {"start": pd.Timestamp(trading_hours["gte"]), "end": pd.Timestamp(trading_hours["lt"])} for
+            {"start": pd.Timestamp(trading_hours["gte"], unit='ns'), "end": pd.Timestamp(trading_hours["lt"], unit='ns')} for
             trading_hours in data['default_partial_trading_hours']]
         self.regular_trading_days = data['regular_trading_days']
         self.partial_trading_days = data['partial_trading_days']
