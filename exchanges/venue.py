@@ -67,10 +67,10 @@ class Venue:
         return pd.date_range(start=start, end=end, freq='N')
 
     def is_trading_time(self, timestamp):
-        day_str = timestamp.strftime('%Y-%m-%d')
+        day = pd.Timestamp(timestamp)
 
         # Get trading hours for the given day
-        trading_hours, reason = self.get_trading_hours(day_str)
+        trading_hours, reason = self.get_trading_hours(day)
 
         # Return True if bool(x) is True for any x in the iterable. If the iterable is empty, return False.
         return any(
@@ -112,11 +112,12 @@ class Venue:
     def is_partial_trading_day(self, day, reason=None):
         # Is this a day where regular trading hours would normally have occurred, but for some reason today will not?
         regular_reason = False
+        day_str = day.strftime('%Y-%m-%d')
 
         if reason is None:
-            regular_reason = self.partial_trading_days[day]["reason"]
-        elif self.partial_trading_days[day]["reason"] == reason:
-            regular_reason = self.partial_trading_days[day]["reason"]
+            regular_reason = self.partial_trading_days[day_str]["reason"]
+        elif self.partial_trading_days[day_str]["reason"] == reason:
+            regular_reason = self.partial_trading_days[day_str]["reason"]
 
         return (True, regular_reason) if regular_reason else (False, 'N/A')
 
@@ -130,7 +131,7 @@ class Venue:
         if self.is_non_trading_day(day):
             # TODO: get the non-trading reason from the overloaded is_xxx_reason
             # If it's a non-trading day, return an empty list and the reason
-            return [], self.non_trading_days[day].get('reason', "Non-Trading Day")
+            return [], self.irregular_non_trading_days[day.strftime('%Y-%m-%d')].get('reason', "Non-Trading Day")
         elif self.is_partial_trading_day(day):
             # Get trading hours for the given day using Python 3.8+ assignment expression (Walrus :=)
             # If 'hours' key exists in the dictionary for the given day, assign its value to 'trading_hours'
