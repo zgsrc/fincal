@@ -131,7 +131,9 @@ class Venue:
         if self.is_non_trading_day(day):
             # TODO: get the non-trading reason from the overloaded is_xxx_reason
             # If it's a non-trading day, return an empty list and the reason
-            return [], self.irregular_non_trading_days[day.strftime('%Y-%m-%d')].get('reason', "Non-Trading Day")
+            day_str = day.strftime('%Y-%m-%d')
+            reason = self.irregular_non_trading_days[day_str]["reason"] if day_str in self.irregular_non_trading_days else "Non-Trading Day"
+            return [], reason
         elif self.is_partial_trading_day(day):
             # Get trading hours for the given day using Python 3.8+ assignment expression (Walrus :=)
             # If 'hours' key exists in the dictionary for the given day, assign its value to 'trading_hours'
