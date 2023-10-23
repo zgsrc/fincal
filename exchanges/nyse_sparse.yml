@@ -1,0 +1,60 @@
+timezone: "America/New_York"
+regular_trading_days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+early_trading_hours: [{"session": "NYSE Arca Early Trading", "gte": "4:00 am", "lt": "9:30 am"}]
+regular_trading_hours: [{"session": "NYSE American Core Trading", "gte": "9:30 am", "lt": "4:00 pm"}]
+late_trading_hours: [{"session": "NYSE American Late Trading", "gte": "4:00 pm", "lt": "8:00 pm"}]
+standard_partial_early_trading_hours: [{"session": "NYSE Arca Early Trading", "gte": "4:00 am", "lt": "9:30 am"}]
+standard_partial_regular_trading_hours: [{"session": "NYSE American Core Trading", "gte": "9:30 am", "lt": "1:00 pm"}]
+standard_partial_late_trading_hours: [{"session": "NYSE American Late Trading", "gte": "1:00 pm", "lt": "5:00 pm"}]
+data_provided_from_date: "1996-01-01"
+data_provided_through_date: "2017-01-01"
+
+partial_trading_days: {"Day Before New Year's Day": {
+                "12-29": ["2001", "2007", "2018"],
+                "12-30": ["2005", "2011", "2012", "2016"],
+                "12-31": ["1996", "1997", "1998", "1999", "2001", "2002", "2004", "2007",
+                          "2008", "2009", "2012", "2013", "2014", "2015", "2016", "2017"],
+            },
+            "Day Before President's Day": {
+                "02-13": ["1998", "2004", "2009"],
+                "02-14": ["1997", "2003"],
+                "02-15": ["2002", "2008"],
+                "02-16": ["1996", "2001", "2007"],
+                "02-17": ["2006"],
+                "02-18": ["2000", "2005"],
+            },
+            "Day Before Thanksgiving": {
+                "11-21": ["2001", "2007"],
+                "11-22": ["2000", "2006"],
+                "11-23": ["2001", "2005", "2012"],
+                "11-24": ["2004", "2006", "2017"],
+                "11-25": ["1998", "2005", "2011", "2016"],
+                "11-26": ["1997", "2003", "2004", "2008", "2010"],
+                "11-27": ["1996", "1998", "2002", "2009", "2015"],
+            }}  # Add the partial trading days data here
+non_trading_days: {"New Year's Day": {
+                "01-01": ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006",
+                          "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2018"],
+                "01-02": ["2017"],
+            },
+            "Martin Luther King Day": {
+                "01-15": ["1996"],
+                "01-18": ["1999", "2005", "2011", "2017"],
+                "01-19": ["1998", "2004", "2010", "2016"],
+                "01-20": ["1997", "2003", "2009", "2015"],
+                "01-21": ["2002", "2008", "2014"],
+            },}  # Add the non-trading days data here
+
+irregular_partial_trading_days:
+  2016-04-12:
+    reason: "Snow storm"
+    sessions:
+      - session: "NYSE Arca Early Trading"
+        hours: [{gte: "9:00 am", lt: "11:00 am"}]
+      - session: "NYSE American Core Trading"
+        hours: [{gte: "11:00 am", lt: "2:00 pm"}]
+      - session: "NYSE American Late Trading"
+        hours: [{gte: "2:00 pm", lt: "4:00 pm"}]
+
+intra_day_interruptions:
+  2000-02-16: {reason: "Walter N Frank", hours: [{gte: "12:00 pm", lt: "12:01 pm"}]}
